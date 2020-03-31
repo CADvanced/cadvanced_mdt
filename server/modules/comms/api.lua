@@ -1,0 +1,28 @@
+local api = {}
+
+function api.request(query, callback)
+    local conf = module("server/modules/config")
+    local token = conf.val("api_token")
+    local url = conf.val("cad_url") .. "/api"
+    print_debug("MAKING API CALL TO " .. url)
+    print_debug("CALL BODY: " .. query)
+    PerformHttpRequest(
+        url,
+        function(errorCode, resultData)
+            print_debug(resultData)
+            if errorCode ~= 200 then
+                print_debug("CADvanced: ERROR - Unable to perform query " .. query .. ", error " .. errorCode)
+                callback({error = errorCode})
+            end
+            callback({result = json.decode(resultData)})
+        end,
+        "POST",
+        query,
+        {
+            ["Content-Type"] = "application/json",
+            ["cadvanced-token"] = token
+        }
+    )
+end
+
+return api
