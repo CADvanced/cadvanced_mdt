@@ -9,7 +9,7 @@ function api.request(query, callback)
     PerformHttpRequest(
         url,
         function(errorCode, resultData)
-            print_debug(resultData)
+            print_debug("CALL RESPONSE: " .. resultData)
             if errorCode ~= 200 then
                 print_debug("CADvanced: ERROR - Unable to perform query " .. query .. ", error " .. errorCode)
                 callback({error = errorCode})

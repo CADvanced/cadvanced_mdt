@@ -75,7 +75,7 @@ function users.validate(source, setKickReason)
         print_debug("PLAYER JOIN DENIED - NO STEAM ID")
         return false
     end
-    if conf.val("enable_whitelist") and not hasValue(state_get("whitelisted"), id) then
+    if conf.val("enable_whitelist") and not hasValue(state_get("whitelist"), id) then
         setKickReason("You are not whitelisted for this server")
         CancelEvent()
         print_debug("PLAYER JOIN DENIED - NOT WHITELISTED")

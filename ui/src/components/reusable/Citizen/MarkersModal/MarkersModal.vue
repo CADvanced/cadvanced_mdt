@@ -77,7 +77,7 @@
                 const modalData = this.$store.getters.getModalData('markers');
                 const toSend = {
                     type: this.markerType,
-                    typeId: modalData.parentEntityId,
+                    typeId: modalData.entity.id,
                     markerId: id
                 };
                 this.sendClientMessage('removeMarker', toSend);

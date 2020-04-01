@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --config webpack.config.dev.js",,
+    "dev": "webpack-dev-server --config webpack.config.dev.js",
     "fivem": "webpack --config webpack.config.fivem.js"
   },
   "author": "Andrew Isherwood <support@cadvanced.app>",
