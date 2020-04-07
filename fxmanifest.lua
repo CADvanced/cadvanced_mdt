@@ -3,7 +3,7 @@ games {"gta5"}
 
 name "CADvanced MDT"
 description "CADvanced MDT, a FiveM resource that provides integration between CADvanced (https://cadvanced.app) and FiveM in the form of an in-game MDT."
-version "2.0.1"
+version "2.0.2"
 
 ui_page "ui/build/index.html"
 
