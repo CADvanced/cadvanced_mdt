@@ -1,19 +1,41 @@
 import logger from './logger';
+import clientSender from '../mixins/clientSender';
 export default {
     created: function() {
         // Create listener for incoming messages coming from
         // client Lua
-        window.addEventListener('message', event => this.processMessage(event));
+        window.addEventListener('message', (event) =>
+            this.processMessage(event)
+        );
     },
     destroyed: function() {
         // Destroy listener for incoming messages coming from
         // client Lua
-        window.removeEventListener('message', event =>
+        window.removeEventListener('message', (event) =>
             this.processMessage(event)
         );
     },
     mixins: [logger],
     methods: {
+        // We may need to update the active marker and route when a call changed
+        updateMarkerRoute() {
+            const activeMarker = this.$store.getters.getActiveMarker;
+            if (activeMarker !== -1) {
+                const calls = this.$store.getters.getCalls;
+                const call = calls.find((c) => c.id === activeMarker);
+                this.sendClientMessage('setCallMarker', {
+                    call,
+                });
+            }
+            const activeRoute = this.$store.getters.getActiveRoute;
+            if (activeRoute !== -1) {
+                const calls = this.$store.getters.getCalls;
+                const call = calls.find((c) => c.id === activeRoute);
+                this.sendClientMessage('setCallRoute', {
+                    call,
+                });
+            }
+        },
         // Handler for incoming messages from client Lua
         // const event = new Event('message');event.data = {action:'showMdt'};window.dispatchEvent(event);
         processMessage() {
@@ -54,6 +76,7 @@ export default {
                         case 'calls':
                             this.doLog('RECEIVED CALLS');
                             this.$store.commit('setCalls', event.data.data);
+                            this.updateMarkerRoute();
                             break;
                         case 'user_units':
                             this.doLog('RECEIVED USER_UNITS');
@@ -114,6 +137,6 @@ export default {
                     }
                 }
             }
-        }
-    }
+        },
+    },
 };

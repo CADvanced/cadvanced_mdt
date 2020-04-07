@@ -25,6 +25,9 @@ SetHttpHandler(
                             elseif (data.object == "call") then
                                 -- Update a given call
                                 calls.update_call(data.payload.callId)
+                            elseif (data.object == "calls") then
+                                -- Update all calls
+                                calls.repopulate_calls()
                             elseif (data.object == "user_units") then
                                 -- Repopulate all user / unit assignments
                                 units.repopulate_user_units()

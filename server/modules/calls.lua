@@ -5,7 +5,7 @@ local api = module("server/modules/comms/api")
 local calls = {}
 
 -- Get the table of all calls
-function calls.get_all_calls()
+function calls.get_all_calls(pass_to_client)
     local q_all_calls = queries.get_all_calls()
     api.request(
         q_all_calls,
@@ -16,6 +16,9 @@ function calls.get_all_calls()
                     table.insert(cll, call)
                 end
                 state_set("calls", cll)
+                if (pass_to_client ~= nil and pass_to_client) then
+                    client_sender.pass_data(state.calls, "calls")
+                end
             else
                 print_debug(response.error)
             end
@@ -55,5 +58,9 @@ function calls.update_call(id)
     )
 end
 
+-- Repopulate all calls
+function calls.repopulate_calls()
+    calls.get_all_calls(true)
+end
 
 return calls

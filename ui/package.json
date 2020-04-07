@@ -1,36 +1,36 @@
 {
-  "name": "cadvanced_mdt",
-  "version": "2.0.2",
-  "description": "The Vue powered UI for the CADvanced MDT",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --config webpack.config.dev.js",
-    "fivem": "webpack --config webpack.config.fivem.js"
-  },
-  "author": "Andrew Isherwood <support@cadvanced.app>",
-  "license": "SEE LICENSE IN LICENCE",
-  "dependencies": {
-    "axios": "^0.19.1",
-    "howler": "^2.1.3",
-    "vue": "^2.6.11",
-    "vue-debounce": "^2.3.0",
-    "vue-router": "^3.1.3",
-    "vue-select": "^3.9.2",
-    "vuex": "^3.1.2"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.7.7",
-    "@babel/preset-env": "^7.7.7",
-    "babel-loader": "^8.0.6",
-    "copy-webpack-plugin": "^5.1.1",
-    "css-loader": "^3.4.1",
-    "html-webpack-plugin": "^3.2.0",
-    "vue-loader": "^15.8.3",
-    "vue-style-loader": "^4.1.2",
-    "vue-template-compiler": "^2.6.11",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.10.1"
-  }
+    "name": "cadvanced_mdt",
+    "version": "2.0.3",
+    "description": "The Vue powered UI for the CADvanced MDT",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "webpack-dev-server --config webpack.config.dev.js",
+        "fivem": "webpack --config webpack.config.fivem.js"
+    },
+    "author": "Andrew Isherwood <support@cadvanced.app>",
+    "license": "SEE LICENSE IN LICENCE",
+    "dependencies": {
+        "axios": "^0.19.1",
+        "howler": "^2.1.3",
+        "vue": "^2.6.11",
+        "vue-debounce": "^2.3.0",
+        "vue-router": "^3.1.3",
+        "vue-select": "^3.9.2",
+        "vuex": "^3.1.2"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.7.7",
+        "@babel/preset-env": "^7.7.7",
+        "babel-loader": "^8.0.6",
+        "copy-webpack-plugin": "^5.1.1",
+        "css-loader": "^3.4.1",
+        "html-webpack-plugin": "^3.2.0",
+        "vue-loader": "^15.8.3",
+        "vue-style-loader": "^4.1.2",
+        "vue-template-compiler": "^2.6.11",
+        "webpack": "^4.41.5",
+        "webpack-cli": "^3.3.10",
+        "webpack-dev-server": "^3.10.1"
+    }
 }
