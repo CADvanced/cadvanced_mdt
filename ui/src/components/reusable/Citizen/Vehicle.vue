@@ -20,14 +20,20 @@
                     <Property
                         :label="''"
                         :value="
-                            vehicle.vehicleModel.name || '[ Unknown model ]'
+                            vehicle.vehicleModel
+                                ? vehicle.vehicleModel.name
+                                : '[ Unknown model ]'
                         "
                     />
                 </div>
                 <div class="insurance">
                     <Property
                         :label="'Insurance'"
-                        :value="vehicle.insuranceStatus.name"
+                        :value="
+                            vehicle.insuranceStatus
+                                ? vehicle.insuranceStatus.name
+                                : '[ Unknown status ]'
+                        "
                     />
                 </div>
             </div>
@@ -55,19 +61,19 @@
         props: {
             vehicle: {
                 type: Object,
-                required: true
-            }
+                required: true,
+            },
         },
         computed: {
             hasMarkers() {
                 return this.vehicle.markers && this.vehicle.markers.length > 0;
-            }
+            },
         },
         components: {
             Property,
             SectionProperty,
             Markers,
-            MiniButton
+            MiniButton,
         },
         methods: {
             openMarkersModal() {
@@ -77,11 +83,11 @@
                         open: true,
                         type: 'Vehicle',
                         entity: this.vehicle,
-                        updateMutation: 'updateVehicleInCitizenSearchResult'
-                    }
+                        updateMutation: 'updateVehicleInCitizenSearchResult',
+                    },
                 });
-            }
-        }
+            },
+        },
     };
 </script>
 

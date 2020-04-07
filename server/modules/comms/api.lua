@@ -20,7 +20,8 @@ function api.request(query, callback)
         query,
         {
             ["Content-Type"] = "application/json",
-            ["cadvanced-token"] = token
+            ["cadvanced-token"] = token,
+            ["cadvanced-mdt-version"] = GetResourceMetadata('cadvanced_mdt', 'version', 0)
         }
     )
 end

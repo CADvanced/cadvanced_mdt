@@ -4,7 +4,9 @@ RegisterNUICallback(
     function(_, cb)
         print_debug("RECEIVED hideMdt FROM NUI")
         SetNuiFocus(false, false)
-        cb()
+        if cb then
+            cb()
+        end
     end
 )
 
@@ -16,7 +18,9 @@ RegisterNUICallback(
         print_debug("RECEIVED REQUEST FROM NUI TO SEND INIT DATA")
         print_debug("REQUESTING INIT DATA FROM SERVER")
         TriggerServerEvent("send_init")
-        cb()
+        if cb then
+            cb()
+        end
     end
 )
 
@@ -28,7 +32,9 @@ RegisterNUICallback(
         print_debug("RECEIVED REQUEST FROM NUI TO SEND CITIZEN SEARCH PARAMETERS")
         print_debug("SENDING CITIZEN SEARCH OBJECT TO SERVER")
         TriggerServerEvent("search_citizens", data)
-        cb()
+        if cb then
+            cb()
+        end
     end
 )
 
@@ -40,7 +46,9 @@ RegisterNUICallback(
         print_debug("RECEIVED REQUEST FROM NUI TO SEND VEHICLE SEARCH PARAMETERS")
         print_debug("SENDING VEHICLE SEARCH OBJECT TO SERVER")
         TriggerServerEvent("search_vehicles", data)
-        cb()
+        if cb then
+            cb()
+        end
     end
 )
 
@@ -52,7 +60,9 @@ RegisterNUICallback(
         print_debug("RECEIVED REQUEST FROM NUI TO GET CITIZEN OFFENCES")
         print_debug("SENDING GET CITIZEN OFFENCES REQUEST TO SERVER")
         TriggerServerEvent("get_citizen_offences", data)
-        cb()
+        if cb then
+            cb()
+        end
     end
 )
 
@@ -64,7 +74,9 @@ RegisterNUICallback(
         print_debug("RECEIVED REQUEST FROM NUI TO REMOVE USER " .. data.userId .. " FROM UNIT " .. data.unitId)
         print_debug("SENDING REMOVE USER FROM UNIT REQUEST TO SERVER")
         TriggerServerEvent("remove_user_from_unit", data)
-        cb()
+        if cb then
+            cb()
+        end
     end
 )
 
@@ -76,7 +88,9 @@ RegisterNUICallback(
         print_debug("RECEIVED REQUEST FROM NUI TO ADD USER " .. data.userId .. " TO UNIT " .. data.unitId)
         print_debug("SENDING ADD USER TO UNIT REQUEST TO SERVER")
         TriggerServerEvent("add_user_to_unit", data)
-        cb()
+        if cb then
+            cb()
+        end
     end
 )
 
@@ -88,7 +102,9 @@ RegisterNUICallback(
         print_debug("RECEIVED REQUEST FROM NUI TO SET STATE OF UNIT " .. data.unitId .. " TO STATE " .. data.stateId)
         print_debug("SENDING SET UNIT STATE REQUEST TO SERVER")
         TriggerServerEvent("set_unit_state", data)
-        cb()
+        if cb then
+            cb()
+        end
     end
 )
 
@@ -100,7 +116,9 @@ RegisterNUICallback(
         print_debug("RECEIVED REQUEST FROM NUI TO ADD MARKER " .. data.markerId .. " TO " .. data.type .. " " .. data.typeId)
         print_debug("SENDING MARKER ADDITION REQUEST TO SERVER")
         TriggerServerEvent("add_marker", data)
-        cb()
+        if cb then
+            cb()
+        end
     end
 )
 
@@ -112,7 +130,9 @@ RegisterNUICallback(
         print_debug("RECEIVED REQUEST FROM NUI TO REMOVE MARKER " .. data.markerId .. " FROM " .. data.type .. " " .. data.typeId)
         print_debug("SENDING MARKER REMOVAL REQUEST TO SERVER")
         TriggerServerEvent("remove_marker", data)
-        cb()
+        if cb then
+            cb()
+        end
     end
 )
 
@@ -123,7 +143,9 @@ RegisterNUICallback(
         -- Add the marker
         print_debug("RECEIVED REQUEST FROM NUI TO SET MARKER FOR CALL " .. data.call.id)
         set_call_marker(data.call)
-        cb()
+        if cb then
+            cb()
+        end
     end
 )
 
@@ -134,7 +156,9 @@ RegisterNUICallback(
         -- Add the route
         print_debug("RECEIVED REQUEST FROM NUI TO SET ROUTE")
         set_call_route()
-        cb()
+        if cb then
+            cb()
+        end
     end
 )
 
@@ -145,7 +169,9 @@ RegisterNUICallback(
         -- Remove the marker
         print_debug("RECEIVED REQUEST FROM NUI TO REMOVE MARKER")
         clear_call_marker()
-        cb()
+        if cb then
+            cb()
+        end
     end
 )
 
@@ -156,7 +182,9 @@ RegisterNUICallback(
         -- Remove the routes
         print_debug("RECEIVED REQUEST FROM NUI TO REMOVE ROUTE")
         clear_call_route()
-        cb()
+        if cb then
+            cb()
+        end
     end
 )
 

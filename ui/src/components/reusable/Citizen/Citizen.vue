@@ -29,12 +29,18 @@
             <Property
                 class="ethnicity property"
                 :label="'Ethnicity'"
-                :value="citizen.ethnicity.name"
+                :value="
+                    citizen.ethnicity
+                        ? citizen.ethnicity.name
+                        : '[ Unknown ethnicity ]'
+                "
             />
             <Property
                 class="gender property"
                 :label="'Gender'"
-                :value="citizen.gender.name"
+                :value="
+                    citizen.gender ? citizen.gender.name : '[ Unknown gender ]'
+                "
             />
             <Property
                 class="height property"
@@ -126,17 +132,17 @@
             Incidents,
             Alert,
             Markers,
-            MiniButton
+            MiniButton,
         },
         props: {
             citizen: {
                 type: Object,
-                required: true
+                required: true,
             },
             open: {
                 type: String,
-                required: true
-            }
+                required: true,
+            },
         },
         methods: {
             setOpen() {
@@ -152,10 +158,10 @@
                         open: true,
                         type: 'Citizen',
                         entity: this.citizen,
-                        updateMutation: 'updateCitizenSearchResult'
-                    }
+                        updateMutation: 'updateCitizenSearchResult',
+                    },
                 });
-            }
+            },
         },
         computed: {
             isOpen() {
@@ -173,8 +179,8 @@
             },
             getWarrants() {
                 return this.citizen.warrants;
-            }
-        }
+            },
+        },
     };
 </script>
 

@@ -4,7 +4,11 @@
             <div class="summary">
                 {{ vehicle.licencePlate || '[ Unknown licence plate ]' }}
                 {{ vehicle.colour || '[ Unknown colour ]' }}
-                {{ vehicle.vehicleModel.name || '[ Unknown model ]' }}
+                {{
+                    vehicle.vehicleModel
+                        ? vehicle.vehicleModel.name
+                        : '[ Unknown model ]'
+                }}
             </div>
             <div class="markers">
                 <Markers :markers="vehicle.markers" />
@@ -68,8 +72,16 @@
                         >
                             <Property
                                 class="licence property"
-                                :label="licence.licenceType.name"
-                                :value="licence.licenceStatus.name"
+                                :label="
+                                    licence.licenceType
+                                        ? licence.licenceType.name
+                                        : '[ Unknown licence type ]'
+                                "
+                                :value="
+                                    licence.licenceStatus
+                                        ? licence.licenceStatus.name
+                                        : '[ Unknown status ]'
+                                "
                             />
                         </div>
                     </div>
@@ -80,7 +92,11 @@
                 <div class="insurance-details">
                     <Property
                         class="name property"
-                        :value="vehicle.insuranceStatus.name || 'Unknown'"
+                        :value="
+                            vehicle.insuranceStatus
+                                ? vehicle.insuranceStatus.name
+                                : '[ Unknown insurance status ]'
+                        "
                     />
                 </div>
             </div>
@@ -105,13 +121,13 @@
             Alert,
             Markers,
             MiniButton,
-            SectionProperty
+            SectionProperty,
         },
         props: {
             vehicle: {
                 type: Object,
-                required: true
-            }
+                required: true,
+            },
         },
         mixins: [logger],
         methods: {
@@ -123,8 +139,8 @@
                         open: true,
                         type: 'Vehicle',
                         entity,
-                        updateMutation: 'updateVehicleSearchResult'
-                    }
+                        updateMutation: 'updateVehicleSearchResult',
+                    },
                 });
             },
             openCitizenMarkersModal(entity) {
@@ -135,10 +151,10 @@
                         open: true,
                         type: 'Citizen',
                         entity,
-                        updateMutation: 'updateCitizenInVehicleSearchResult'
-                    }
+                        updateMutation: 'updateCitizenInVehicleSearchResult',
+                    },
                 });
-            }
+            },
         },
         computed: {
             getAlerts() {
@@ -161,8 +177,8 @@
                     this.vehicle.citizen.warrants &&
                     this.vehicle.citizen.warrants.length > 0
                 );
-            }
-        }
+            },
+        },
     };
 </script>
 

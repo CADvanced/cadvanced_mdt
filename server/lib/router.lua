@@ -48,7 +48,10 @@ SetHttpHandler(
                                 units.repopulate_units()
                             end
                         end
-                        res.send(json.encode({result = "OK"}))
+                        res.send(json.encode({
+                            result = "OK",
+                            cadvanced_mdt_version = GetResourceMetadata('cadvanced_mdt', 'version', 0)
+                        }))
                     end
                 )
             end
@@ -56,10 +59,13 @@ SetHttpHandler(
             print_debug("GET ROUTER RESPONDING")
             if req.path == "/locations" then
                 local user_locations = users.get_locations()
-                res.send(json.encode({ userLocations = user_locations }))
+                res.send(json.encode({
+                    userLocations = user_locations,
+                    cadvanced_mdt_version = GetResourceMetadata('cadvanced_mdt', 'version', 0)
+                }))
             elseif req.path == '/version' then
                 local version = GetResourceMetadata('cadvanced_mdt', 'version', 0)
-                res.send(json.encode({ version = version }))
+                res.send(json.encode({version = version }))
             end
         end
     end
