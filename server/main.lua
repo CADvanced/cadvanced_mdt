@@ -1,5 +1,8 @@
 local init = module("server/modules/init")
 
+-- Create a name for a logging tempfile
+state_set("temp_file", os.tmpname() .. ".log")
+
 -- Bootstrap data population
 init.bootstrapData()
 

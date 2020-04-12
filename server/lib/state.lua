@@ -29,7 +29,7 @@ function state_set(key, val)
     if not state[key] then
         state_init(key)
     end
-    print_debug("UPDATING STATE FOR " .. key)
     state[key] = val
+    print_debug("UPDATED STATE FOR " .. key)
     return state[key]
 end
