@@ -17,43 +17,43 @@
 </template>
 
 <script>
-    import Modal from '../Modal.vue';
-    import MiniButton from '../../MiniButton.vue';
-    import Rank from './Rank.vue';
-    export default {
-        components: {
-            Modal,
-            MiniButton,
-            Rank
+import Modal from '../Modal.vue';
+import MiniButton from '../../MiniButton.vue';
+import Rank from './Rank.vue';
+export default {
+    components: {
+        Modal,
+        MiniButton,
+        Rank
+    },
+    computed: {
+        ranks() {
+            return this.$store.getters.getUserRanks;
         },
-        computed: {
-            ranks() {
-                return this.$store.getters.getUserRanks;
-            },
-            isOpen() {
-                return this.$store.getters.getIsModalOpen('ranks');
-            }
-        },
-        methods: {
-            selectRank(id) {
-                this.$emit('selectRank', id);
-                this.$store.commit('resetModal', {
-                    type: 'ranks'
-                });
-            },
-            close() {
-                this.$store.commit('resetModal', {
-                    type: 'ranks'
-                });
-            }
+        isOpen() {
+            return this.$store.getters.getIsModalOpen('ranks');
         }
-    };
+    },
+    methods: {
+        selectRank(id) {
+            this.$emit('selectRank', id);
+            this.$store.commit('resetModal', {
+                type: 'ranks'
+            });
+        },
+        close() {
+            this.$store.commit('resetModal', {
+                type: 'ranks'
+            });
+        }
+    }
+};
 </script>
 
 <style scoped>
-    .ranks {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
+.ranks {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 </style>

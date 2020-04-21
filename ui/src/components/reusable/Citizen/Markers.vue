@@ -11,31 +11,31 @@
 </template>
 
 <script>
-    import Alert from '../widgets/Alert.vue';
-    export default {
-        props: {
-            markers: {
-                type: Array,
-                required: true
-            }
-        },
-        components: {
-            Alert
+import Alert from '../widgets/Alert.vue';
+export default {
+    props: {
+        markers: {
+            type: Array,
+            required: true
         }
-    };
+    },
+    components: {
+        Alert
+    }
+};
 </script>
 
 <style scoped>
-    .markers-container {
-        display: flex;
-        margin-right: 10px;
-    }
+.markers-container {
+    display: flex;
+    margin-right: 10px;
+}
 
-    .marker {
-        margin-left: 10px;
-    }
+.marker {
+    margin-left: 10px;
+}
 
-    .marker:first-child {
-        margin-left: 0;
-    }
+.marker:first-child {
+    margin-left: 0;
+}
 </style>

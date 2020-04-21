@@ -13,46 +13,46 @@
 </template>
 
 <script>
-    import MiniButton from '../../../MiniButton.vue';
-    export default {
-        props: {
-            marker: {
-                type: Object,
-                required: true
-            },
-            isSelected: {
-                type: Boolean,
-                required: false
-            }
+import MiniButton from '../../../MiniButton.vue';
+export default {
+    props: {
+        marker: {
+            type: Object,
+            required: true
         },
-        components: {
-            MiniButton
-        },
-        computed: {
-            icon() {
-                return this.isSelected ? 'fa-minus-circle' : 'fa-plus-circle';
-            }
-        },
-        methods: {
-            toggleMarker() {
-                if (this.isSelected) {
-                    this.$emit('removeMarker', { id: this.marker.id });
-                } else {
-                    this.$emit('addMarker', { id: this.marker.id });
-                }
+        isSelected: {
+            type: Boolean,
+            required: false
+        }
+    },
+    components: {
+        MiniButton
+    },
+    computed: {
+        icon() {
+            return this.isSelected ? 'fa-minus-circle' : 'fa-plus-circle';
+        }
+    },
+    methods: {
+        toggleMarker() {
+            if (this.isSelected) {
+                this.$emit('removeMarker', { id: this.marker.id });
+            } else {
+                this.$emit('addMarker', { id: this.marker.id });
             }
         }
-    };
+    }
+};
 </script>
 
 <style scoped>
-    .marker-container {
-        margin: 10px;
-    }
-    .marker-container:first-child {
-        margin-left: 0;
-    }
-    .marker-container:last-child {
-        margin-right: 0;
-    }
+.marker-container {
+    margin: 10px;
+}
+.marker-container:first-child {
+    margin-left: 0;
+}
+.marker-container:last-child {
+    margin-right: 0;
+}
 </style>

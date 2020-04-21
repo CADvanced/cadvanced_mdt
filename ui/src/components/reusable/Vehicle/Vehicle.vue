@@ -105,136 +105,136 @@
 </template>
 
 <script>
-    import logger from '../../../mixins/logger';
-    import SectionProperty from '../Citizen/SectionProperty.vue';
-    import Property from '../Citizen/Property.vue';
-    import Licence from '../Citizen/Licence.vue';
-    import Markers from '../Citizen/Markers.vue';
-    import Warrant from '../Citizen/Warrant.vue';
-    import Alert from '../widgets/Alert.vue';
-    import MiniButton from '../../MiniButton.vue';
-    export default {
-        components: {
-            Property,
-            Licence,
-            Warrant,
-            Alert,
-            Markers,
-            MiniButton,
-            SectionProperty,
+import logger from '../../../mixins/logger';
+import SectionProperty from '../Citizen/SectionProperty.vue';
+import Property from '../Citizen/Property.vue';
+import Licence from '../Citizen/Licence.vue';
+import Markers from '../Citizen/Markers.vue';
+import Warrant from '../Citizen/Warrant.vue';
+import Alert from '../widgets/Alert.vue';
+import MiniButton from '../../MiniButton.vue';
+export default {
+    components: {
+        Property,
+        Licence,
+        Warrant,
+        Alert,
+        Markers,
+        MiniButton,
+        SectionProperty
+    },
+    props: {
+        vehicle: {
+            type: Object,
+            required: true
+        }
+    },
+    mixins: [logger],
+    methods: {
+        openVehicleMarkersModal(entity) {
+            this.doLog(JSON.parse(JSON.stringify(entity)));
+            this.$store.commit('setModal', {
+                type: 'markers',
+                data: {
+                    open: true,
+                    type: 'Vehicle',
+                    entity,
+                    updateMutation: 'updateVehicleSearchResult'
+                }
+            });
         },
-        props: {
-            vehicle: {
-                type: Object,
-                required: true,
-            },
+        openCitizenMarkersModal(entity) {
+            this.doLog(JSON.parse(JSON.stringify(entity)));
+            this.$store.commit('setModal', {
+                type: 'markers',
+                data: {
+                    open: true,
+                    type: 'Citizen',
+                    entity,
+                    updateMutation: 'updateCitizenInVehicleSearchResult'
+                }
+            });
+        }
+    },
+    computed: {
+        getAlerts() {
+            // Collect together all the alerts
         },
-        mixins: [logger],
-        methods: {
-            openVehicleMarkersModal(entity) {
-                this.doLog(JSON.parse(JSON.stringify(entity)));
-                this.$store.commit('setModal', {
-                    type: 'markers',
-                    data: {
-                        open: true,
-                        type: 'Vehicle',
-                        entity,
-                        updateMutation: 'updateVehicleSearchResult',
-                    },
-                });
-            },
-            openCitizenMarkersModal(entity) {
-                this.doLog(JSON.parse(JSON.stringify(entity)));
-                this.$store.commit('setModal', {
-                    type: 'markers',
-                    data: {
-                        open: true,
-                        type: 'Citizen',
-                        entity,
-                        updateMutation: 'updateCitizenInVehicleSearchResult',
-                    },
-                });
-            },
+        getCitizenName() {
+            return `${this.vehicle.citizen.firstName} ${this.vehicle.citizen.lastName}`;
         },
-        computed: {
-            getAlerts() {
-                // Collect together all the alerts
-            },
-            getCitizenName() {
-                return `${this.vehicle.citizen.firstName} ${this.vehicle.citizen.lastName}`;
-            },
-            getCitizenAddress() {
-                return `${this.vehicle.citizen.address} ${this.vehicle.citizen.postalCode}`;
-            },
-            citizenHasMarkers() {
-                return (
-                    this.vehicle.citizen.markers &&
-                    this.vehicle.citizen.markers.length > 0
-                );
-            },
-            citizenHasWarrants() {
-                return (
-                    this.vehicle.citizen.warrants &&
-                    this.vehicle.citizen.warrants.length > 0
-                );
-            },
+        getCitizenAddress() {
+            return `${this.vehicle.citizen.address} ${this.vehicle.citizen.postalCode}`;
         },
-    };
+        citizenHasMarkers() {
+            return (
+                this.vehicle.citizen.markers &&
+                this.vehicle.citizen.markers.length > 0
+            );
+        },
+        citizenHasWarrants() {
+            return (
+                this.vehicle.citizen.warrants &&
+                this.vehicle.citizen.warrants.length > 0
+            );
+        }
+    }
+};
 </script>
 
 <style scoped>
-    .vehicle {
-        letter-spacing: 0.1em;
-        margin-top: 5px;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-    }
-    .vehicle:first-child {
-        margin-top: 70px;
-    }
-    .label {
-        font-weight: bold;
-    }
-    .header {
-        display: flex;
-        align-items: center;
-        background: rgba(255, 255, 255, 0.1);
-        font-weight: 500;
-        font-size: 24px;
-        letter-spacing: 0.1em;
-        color: rgba(255, 255, 255, 0.7);
-    }
-    .summary {
-        margin: 15px 23px 19px 23px;
-    }
-    .markers {
-        margin-left: 30px;
-        display: flex;
-    }
-    .alerts-container {
-        margin: 0 50px 0 auto;
-    }
-    .details {
-        display: grid;
-        grid-template-columns: 4fr 1fr 1fr;
-        border-top: 1px solid rgba(255, 255, 255, 0.7);
-    }
-    .detail-section {
-        display: flex;
-    }
-    .vehicle-markers {
-        display: flex;
-        padding: 8px 15px;
-    }
-    .property {
-        color: rgba(255, 255, 255, 0.7);
-        padding: 8px 15px;
-    }
-    .licences-details,
-    .insurance-details,
-    .warrant-details,
-    .name-alerts,
-    .owner-details {
-        display: flex;
-        align-items: center;
-    }
+.vehicle {
+    letter-spacing: 0.1em;
+    margin-top: 5px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+.vehicle:first-child {
+    margin-top: 70px;
+}
+.label {
+    font-weight: bold;
+}
+.header {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.7);
+}
+.summary {
+    margin: 15px 23px 19px 23px;
+}
+.markers {
+    margin-left: 30px;
+    display: flex;
+}
+.alerts-container {
+    margin: 0 50px 0 auto;
+}
+.details {
+    display: grid;
+    grid-template-columns: 4fr 1fr 1fr;
+    border-top: 1px solid rgba(255, 255, 255, 0.7);
+}
+.detail-section {
+    display: flex;
+}
+.vehicle-markers {
+    display: flex;
+    padding: 8px 15px;
+}
+.property {
+    color: rgba(255, 255, 255, 0.7);
+    padding: 8px 15px;
+}
+.licences-details,
+.insurance-details,
+.warrant-details,
+.name-alerts,
+.owner-details {
+    display: flex;
+    align-items: center;
+}
 </style>

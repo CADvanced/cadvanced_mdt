@@ -18,39 +18,39 @@
 </template>
 
 <script>
-    import Citizen from '../../../reusable/Citizen/Citizen.vue';
-    import UpdateMessage from '../../../reusable/UpdateMessage.vue';
-    export default {
-        components: {
-            Citizen,
-            UpdateMessage
-        },
-        props: {
-            searched: {
-                type: Boolean,
-                required: true
-            }
-        },
-        data: function() {
-            return {
-                open: '0'
-            };
-        },
-        methods: {
-            setOpen(open) {
-                this.open = open;
-            }
-        },
-        computed: {
-            results() {
-                return this.$store.getters.getCitizenSearchResults;
-            }
+import Citizen from '../../../reusable/Citizen/Citizen.vue';
+import UpdateMessage from '../../../reusable/UpdateMessage.vue';
+export default {
+    components: {
+        Citizen,
+        UpdateMessage
+    },
+    props: {
+        searched: {
+            type: Boolean,
+            required: true
         }
-    };
+    },
+    data: function () {
+        return {
+            open: '0'
+        };
+    },
+    methods: {
+        setOpen(open) {
+            this.open = open;
+        }
+    },
+    computed: {
+        results() {
+            return this.$store.getters.getCitizenSearchResults;
+        }
+    }
+};
 </script>
 
 <style scoped>
-    #search_results {
-        overflow-y: auto;
-    }
+#search_results {
+    overflow-y: auto;
+}
 </style>

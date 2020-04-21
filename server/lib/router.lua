@@ -49,6 +49,9 @@ SetHttpHandler(
                             elseif (data.object == "units") then
                                 -- Repopulate all units
                                 units.repopulate_units()
+                            elseif (data.object == "whitelist") then
+                                -- Repopulate the whitelist
+                                users.get_whitelisted()
                             end
                         end
                         res.send(json.encode({

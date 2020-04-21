@@ -65,8 +65,8 @@
                                     :label="'Date & time'"
                                     :value="
                                         incident.ticket.date +
-                                            ' ' +
-                                            incident.ticket.time
+                                        ' ' +
+                                        incident.ticket.time
                                     "
                                 />
                             </li>

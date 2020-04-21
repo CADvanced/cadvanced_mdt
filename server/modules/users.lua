@@ -137,23 +137,28 @@ function users.populate_player(steamId)
             if response.error == nil then
                 local usr = state_get("users")
                 local returned_user = response.result.data.getUser
-                if is_new then
-                    returned_user.source = my_source
-                    table.insert(usr, returned_user)
-                else
-                    for i, it in ipairs(usr) do
-                        if it.steamId == steamId then
-                            -- Preserve the user's source
-                            returned_user.source = usr[i].source
-                            usr[i] = returned_user
-                            break
+                if returned_user ~= nil then
+                    if is_new then
+                        returned_user.source = my_source
+                        table.insert(usr, returned_user)
+                    else
+                        for i, it in ipairs(usr) do
+                            if it.steamId == steamId then
+                                -- Preserve the user's source
+                                returned_user.source = usr[i].source
+                                usr[i] = returned_user
+                                break
+                            end
                         end
                     end
+                    state_set("users", usr)
+                    -- Send client the updated user list
+                    print_debug("SENDING ALL CLIENTS UPDATED USERS")
+                    client_sender.pass_data(usr, "users")
+                else
+                    print_debug("PLAYER " .. steamId .. " NOT FOUND IN CAD")
+                    return
                 end
-                state_set("users", usr)
-                -- Send client the updated user list
-                print_debug("SENDING ALL CLIENTS UPDATED USERS")
-                client_sender.pass_data(usr, "users")
             else
                 print_debug(response.error)
             end

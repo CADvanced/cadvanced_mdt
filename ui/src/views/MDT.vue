@@ -16,7 +16,7 @@ import nuiListener from '../mixins/clientListener';
 import clientSender from '../mixins/clientSender';
 
 export default {
-    created: function() {
+    created: function () {
         // Tell client we want some initial data
         this.sendClientMessage('init');
     },

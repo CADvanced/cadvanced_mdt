@@ -10,9 +10,9 @@
 </template>
 
 <style scoped>
-    main {
-        grid-area: 2/1/3/1;
-        padding: 40px 35px;
-        overflow-y: auto;
-    }
+main {
+    grid-area: 2/1/3/1;
+    padding: 40px 35px;
+    overflow-y: auto;
+}
 </style>

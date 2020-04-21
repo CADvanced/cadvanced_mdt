@@ -4,14 +4,12 @@ export default {
     created: function() {
         // Create listener for incoming messages coming from
         // client Lua
-        window.addEventListener('message', (event) =>
-            this.processMessage(event)
-        );
+        window.addEventListener('message', event => this.processMessage(event));
     },
     destroyed: function() {
         // Destroy listener for incoming messages coming from
         // client Lua
-        window.removeEventListener('message', (event) =>
+        window.removeEventListener('message', event =>
             this.processMessage(event)
         );
     },
@@ -22,18 +20,34 @@ export default {
             const activeMarker = this.$store.getters.getActiveMarker;
             if (activeMarker !== -1) {
                 const calls = this.$store.getters.getCalls;
-                const call = calls.find((c) => c.id === activeMarker);
-                this.sendClientMessage('setCallMarker', {
-                    call,
-                });
+                const call = calls.find(c => c.id === activeMarker);
+                if (call) {
+                    this.sendClientMessage('setCallMarker', {
+                        call
+                    });
+                } else {
+                    // The call may have been removed, in which case we want to
+                    // remove the marker
+                    this.sendClientMessage('clearCallMarker', {
+                        call
+                    });
+                }
             }
             const activeRoute = this.$store.getters.getActiveRoute;
             if (activeRoute !== -1) {
                 const calls = this.$store.getters.getCalls;
-                const call = calls.find((c) => c.id === activeRoute);
-                this.sendClientMessage('setCallRoute', {
-                    call,
-                });
+                const call = calls.find(c => c.id === activeRoute);
+                if (call) {
+                    this.sendClientMessage('setCallRoute', {
+                        call
+                    });
+                } else {
+                    // The call may have been removed, in which case we want to
+                    // remove the route
+                    this.sendClientMessage('clearCallRoute', {
+                        call
+                    });
+                }
             }
         },
         // Handler for incoming messages from client Lua
@@ -137,6 +151,6 @@ export default {
                     }
                 }
             }
-        },
-    },
+        }
+    }
 };

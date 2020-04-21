@@ -27,7 +27,7 @@ export default {
         Incident
     },
     mixins: [clientSender],
-    mounted: function() {
+    mounted: function () {
         this.sendClientMessage('getCitizenOffences', { id: this.citizen.id });
     }
 };

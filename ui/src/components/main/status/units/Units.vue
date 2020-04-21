@@ -2,7 +2,11 @@
     <div>
         <div v-if="units.length > 0" id="units-filter">
             <span>Only show my units</span>
-            <i @click="toggleOwnUnits" v-if="!ownUnits" class="fas fa-toggle-off"></i>
+            <i
+                @click="toggleOwnUnits"
+                v-if="!ownUnits"
+                class="fas fa-toggle-off"
+            ></i>
             <i @click="toggleOwnUnits" v-else class="fas fa-toggle-on"></i>
         </div>
         <div v-if="units.length > 0" id="units">
@@ -32,7 +36,7 @@ import clientSender from '../../../../mixins/clientSender';
 import RanksModal from '../../../reusable/Officer/RanksModal.vue';
 import StatesModal from '../../../reusable/Unit/StatesModal.vue';
 export default {
-    data: function() {
+    data: function () {
         return {
             unitBeingEdited: 0,
             unitsOpen: [],

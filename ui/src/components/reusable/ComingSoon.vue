@@ -13,16 +13,16 @@
 </template>
 
 <style scoped>
-    #message {
-        text-align: center;
-        color: rgba(255, 255, 255, 0.7);
-        letter-spacing: 0.1em;
-        width: 70%;
-        margin: 30px auto;
-    }
-    h1 {
-        font-size: 2em;
-        text-transform: uppercase;
-        margin: 0 0 1em 0;
-    }
+#message {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.1em;
+    width: 70%;
+    margin: 30px auto;
+}
+h1 {
+    font-size: 2em;
+    text-transform: uppercase;
+    margin: 0 0 1em 0;
+}
 </style>

@@ -18,43 +18,43 @@
 </template>
 
 <script>
-    import Modal from '../Modal.vue';
-    import MiniButton from '../../MiniButton.vue';
-    import State from './State.vue';
-    export default {
-        components: {
-            Modal,
-            MiniButton,
-            State
+import Modal from '../Modal.vue';
+import MiniButton from '../../MiniButton.vue';
+import State from './State.vue';
+export default {
+    components: {
+        Modal,
+        MiniButton,
+        State
+    },
+    computed: {
+        states() {
+            return this.$store.getters.getUnitStates;
         },
-        computed: {
-            states() {
-                return this.$store.getters.getUnitStates;
-            },
-            isOpen() {
-                return this.$store.getters.getIsModalOpen('unitStates');
-            }
-        },
-        methods: {
-            selectState(id) {
-                this.$emit('selectState', id);
-                this.$store.commit('resetModal', {
-                    type: 'unitStates'
-                });
-            },
-            close() {
-                this.$store.commit('resetModal', {
-                    type: 'unitStates'
-                });
-            }
+        isOpen() {
+            return this.$store.getters.getIsModalOpen('unitStates');
         }
-    };
+    },
+    methods: {
+        selectState(id) {
+            this.$emit('selectState', id);
+            this.$store.commit('resetModal', {
+                type: 'unitStates'
+            });
+        },
+        close() {
+            this.$store.commit('resetModal', {
+                type: 'unitStates'
+            });
+        }
+    }
+};
 </script>
 
 <style scoped>
-    .states {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
+.states {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 </style>
