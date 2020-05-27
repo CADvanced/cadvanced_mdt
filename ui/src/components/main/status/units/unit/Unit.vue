@@ -1,5 +1,9 @@
 <template>
-    <div v-if="!ownUnits || (ownUnits && isAssignedToUnit)" id="unit">
+    <div
+        v-if="!ownUnits || (ownUnits && isAssignedToUnit)"
+        id="unit"
+        :class="{ inPanic: isInPanic }"
+    >
         <UnitHeader
             @beingEdited="beingEdited"
             @leaveUnit="leaveUnit"
@@ -69,6 +73,9 @@ export default {
             return userUnits.find(
                 uu => uu.UserId === user.id && uu.UnitId === this.unit.id
             );
+        },
+        isInPanic() {
+            return this.unit.unitState.code === 'PANIC';
         }
     },
     methods: {
@@ -96,7 +103,7 @@ export default {
                 this.playRoger();
             }
         },
-        'unit.unitState.id': function (newV, oldV) {
+        'unit.unitState.id': function(newV, oldV) {
             if (this.isAssignedToUnit && newV !== oldV) {
                 this.playRoger();
             }
@@ -112,6 +119,9 @@ export default {
     border: 3px solid rgba(255, 255, 255, 0.5);
     box-sizing: border-box;
     border-radius: 10px;
+}
+#unit.inPanic {
+    border: 3px solid #e20000;
 }
 #unit:first-child {
     margin-left: 0;

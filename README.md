@@ -63,6 +63,36 @@ cfg.debug = false
 ```
 Leave this set to default unless otherwise instructed to do so by the CADvanced support team
 
+```
+cfg.panic_command = "panic"
+```
+The command used to initiate a panic in-game
+
+```
+cfg.panic_keybind = "168"
+```
+The keybinding used to initiate a panic in-game, see a full list of keybindings <a href="https://docs.fivem.net/docs/game-references/controls/">here</a>
+
+```
+cfg.panic_flash_mdt = true
+```
+Should the border of the MDT flash when a panic has been initiated
+
+```
+cfg.panic_play_tone = true
+```
+Should a panic tone play in-game when a panic has been initiated
+
+```
+cfg.panic_duration = 10
+```
+If the MDT border is flashing or a tone is playing, how long (in seconds) should this happen for
+
+```
+cfg.panic_create_marker = true
+```
+Should officers who are assigned to the panic call have a marker and route set in-game to the call
+
 
 Once you have done this, install the resource in the same way as any other FiveM resource. If you are not familiar with this process, here's a quick step by step tutorial:
 

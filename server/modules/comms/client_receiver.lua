@@ -25,7 +25,13 @@ function client_receiver.client_event_handlers()
             client_sender.pass_data({
                 homepage = conf.val("homepage"),
                 sound_volume = conf.val("sound_volume"),
-                debug = conf.val("debug")
+                debug = conf.val("debug"),
+                panic_command = conf.val("panic_command"),
+                panic_keybind = conf.val("panic_keybind"),
+                panic_flash_mdt = conf.val("panic_flash_mdt"),
+                panic_play_tone = conf.val("panic_play_tone"),
+                panic_create_marker = conf.val("panic_create_marker"),
+                panic_duration = conf.val("panic_duration")
             }, "config", source)
             client_sender.pass_data(state_get("calls"), "calls", source)
             client_sender.pass_data(state_get("units"), "units", source)
@@ -45,7 +51,25 @@ function client_receiver.client_event_handlers()
         "open_mdt",
         function()
             print_debug("RECEIVED REQUEST FROM CLIENT TO OPEN MDT FOR USER " .. source)
-            client_sender.pass_data({ source = source }, "open_mdt", source)
+            if (hasOfficer(source)) then
+                client_sender.pass_data(nil, "open_mdt", source)
+            else
+                client_sender.pass_data("Only an officer can do this", "send_chat", source)
+            end
+        end
+    )
+
+    -- Start panic
+    RegisterNetEvent("start_panic")
+    AddEventHandler(
+        "start_panic",
+        function()
+            print_debug("RECEIVED REQUEST FROM CLIENT TO START PANIC FOR USER " .. source)
+            if (hasOfficer(source)) then
+                users.start_panic()
+            else
+                client_sender.pass_data("Only an officer can do this", "send_chat", source)
+            end
         end
     )
 

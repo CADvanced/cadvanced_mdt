@@ -10,6 +10,19 @@ RegisterNUICallback(
     end
 )
 
+-- Callback for starting a panic
+RegisterNUICallback(
+    "startPanic",
+    function(_, cb)
+        -- Tell the server to start the panic
+        print_debug("RECEIVED REQUEST FROM NUI TO START PANIC")
+        TriggerServerEvent("start_panic")
+        if cb then
+            cb()
+        end
+    end
+)
+
 -- Callback for sending initialisation data
 RegisterNUICallback(
     "init",

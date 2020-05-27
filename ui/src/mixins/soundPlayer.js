@@ -3,20 +3,33 @@ import { Howl } from 'howler';
 
 export default {
     methods: {
-        playSound(sound) {
+        playSound(sound, repeatWhilePanic) {
             const conf = this.$store.getters.getResourceConfig;
             if (conf && conf.sound_volume) {
                 const player = new Howl({
                     src: [sound],
-                    volume: parseFloat(conf.sound_volume)
+                    loop: repeatWhilePanic,
+                    volume: parseFloat(conf.sound_volume),
+                    onend: () => {
+                        const isPanicActive = this.$store.getters
+                            .getPanicActive;
+                        if (!isPanicActive) {
+                            player.loop(false);
+                        }
+                    }
                 });
                 const debounced = debounce(() => player.play(), 1500);
                 debounced();
             }
         },
         playRoger() {
-            const sound = './sounds/roger.ogg';
-            this.playSound(sound);
+            this.playSound('./sounds/roger.ogg');
+        },
+        playPanic() {
+            const conf = this.$store.getters.getResourceConfig;
+            if (conf.panic_play_tone) {
+                this.playSound('./sounds/panic.ogg', true);
+            }
         }
     }
 };

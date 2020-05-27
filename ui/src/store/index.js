@@ -25,6 +25,7 @@ const store = new Vuex.Store({
         resourceConfig: {},
         visible: false,
         connectionActive: false,
+        panicActive: false,
         steamId: '',
         activeMarker: -1,
         activeRoute: -1,
@@ -74,6 +75,7 @@ const store = new Vuex.Store({
                 : null;
         },
         getConnectionActive: state => state.connectionActive,
+        getPanicActive: state => state.panicActive,
         getIsModalOpen: state => type => state.modals[type].open,
         getModalData: state => type => state.modals[type],
         getActiveMarker: state => state.activeMarker,
@@ -154,6 +156,9 @@ const store = new Vuex.Store({
             state.connectionActive = true;
             setTimeout(() => (state.connectionActive = false), 1500);
         },
+        setPanic: (state, newState) => {
+            state.panicActive = newState;
+        },
         setCitizenOffences: (state, citizen) => {
             if (citizen.offences.length > 0) {
                 const foundIndex = state.citizenSearchResults.findIndex(
@@ -173,6 +178,16 @@ const store = new Vuex.Store({
             (state.modals[args.type] = { open: false }),
         setActiveMarker: (state, callId) => (state.activeMarker = callId),
         setActiveRoute: (state, callId) => (state.activeRoute = callId)
+    },
+    actions: {
+        setPanicIsActive: (context, { call_id }) => {
+            context.commit('setPanic', call_id);
+            const conf = context.getters.getResourceConfig;
+            setTimeout(
+                () => context.commit('setPanic', false),
+                conf.panic_duration * 1000
+            );
+        }
     },
     subscribe: (mutation, state) => {
         logger.methods.doLog(mutation.type);

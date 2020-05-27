@@ -29,6 +29,23 @@ function module(path)
     end
 end
 
+-- Does a user have an active officer
+function hasOfficer(userSource)
+    local users = state_get("users")
+    local has = false
+    for i, iter in ipairs(users) do
+        if (
+            userSource == iter.source and
+            iter.character and
+            iter.character.__typename == "Officer"
+        ) then
+            has = true
+            break
+        end
+    end
+    return has;
+end
+
 -- Generic "check if value is in array" function
 function hasValue(tab, val)
     for index, value in ipairs(tab) do

@@ -22,6 +22,7 @@
             <div class="unit-actions">
                 <MiniButton
                     class="unit-state-button"
+                    v-if="isAssignedToUnit"
                     @miniClick="openStatusModal"
                     text="Unit state"
                     colour="rgba(0,0,0,0.2)"

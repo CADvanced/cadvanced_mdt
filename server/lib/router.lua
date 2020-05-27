@@ -52,6 +52,9 @@ SetHttpHandler(
                             elseif (data.object == "whitelist") then
                                 -- Repopulate the whitelist
                                 users.get_whitelisted()
+                            elseif (data.object == "panic") then
+                                -- We've got a panic
+                                users.display_panic(data.payload.callId)
                             end
                         end
                         res.send(json.encode({

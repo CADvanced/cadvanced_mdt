@@ -1,6 +1,18 @@
 <template>
-    <router-link tag="div" to="/panic">&gt; Panic &lt;</router-link>
+    <div @click="startPanic">&gt; Panic &lt;</div>
 </template>
+
+<script>
+import clientSender from '../../mixins/clientSender';
+export default {
+    methods: {
+        startPanic() {
+            this.sendClientMessage('startPanic');
+        }
+    },
+    mixins: [clientSender]
+};
+</script>
 
 <style scoped>
 div {

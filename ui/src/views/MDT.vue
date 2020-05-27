@@ -1,5 +1,9 @@
 <template>
-    <div id="mdt" v-bind:style="{ display: isVisible }">
+    <div
+        id="mdt"
+        :class="{ panic: shouldFlash }"
+        v-bind:style="{ display: isVisible }"
+    >
         <Header />
         <Main />
         <Footer />
@@ -16,7 +20,7 @@ import nuiListener from '../mixins/clientListener';
 import clientSender from '../mixins/clientSender';
 
 export default {
-    created: function () {
+    created: function() {
         // Tell client we want some initial data
         this.sendClientMessage('init');
     },
@@ -29,6 +33,13 @@ export default {
     computed: {
         isVisible() {
             return this.$store.getters.isVisible ? 'grid' : 'none';
+        },
+        shouldFlash() {
+            const conf = this.$store.getters.getResourceConfig;
+            return (
+                conf.panic_flash_mdt === true &&
+                this.$store.getters.getPanicActive
+            );
         }
     }
 };
@@ -53,5 +64,16 @@ button {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 58px auto 48px;
+}
+div#mdt.panic {
+    animation: blink 0.5s infinite alternate;
+}
+@keyframes blink {
+    0% {
+        border-color: #e20000;
+    }
+    50% {
+        border-color: #777;
+    }
 }
 </style>

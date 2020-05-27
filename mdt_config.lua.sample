@@ -9,6 +9,12 @@ cfg.api_token = "" -- Your CAD's API token, see Admin > Preferences in the CAD
 cfg.enable_whitelist = false -- Only allow players with the "Player" role to join
 cfg.sound_volume = 0.5 -- The volume of MDT sounds
 cfg.debug = false -- Debug mode - do not enable unless requested by support
+cfg.panic_command = "panic" -- The command ( WITHOUT THE / ) to be used to create a panic call
+cfg.panic_keybind = "168" -- The keybind to use to create a panic call (default F7)
+cfg.panic_flash_mdt = true -- When a panic call is created, flash the MDT border
+cfg.panic_play_tone = true -- When a panic call is created, play a panic tone
+cfg.panic_duration = 10 -- Time in seconds the MDT should flash and the tone should play
+cfg.panic_create_marker = true -- When a panic call is created, create a marker and route for all assigned units
 
 -- ##################################
 

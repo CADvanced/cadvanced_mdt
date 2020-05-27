@@ -118,6 +118,22 @@ function users.get_locations()
     return state_get("user_locations")
 end
 
+-- Start a paninc call
+function users.start_panic()
+    local steamId = user_helpers.get_steam_id(source)
+    local q_panic = queries.start_panic(steamId)
+    api.request(
+        q_panic,
+        function(response)
+        end
+    )
+end
+
+-- Receive a panic notification from the CAD and let NUI know
+function users.display_panic(call_id)
+    client_sender.pass_data({ call_id = call_id }, "display_panic")
+end
+
 -- Get a players details and update state as appropriate
 function users.populate_player(steamId)
     local is_new = false

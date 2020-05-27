@@ -14,29 +14,17 @@ AddEventHandler(
     "data:open_mdt",
     function(jsonData)
         print_debug("RECEIVED REQUEST FROM SERVER TO OPEN MDT")
-        local command_source = jsonData.source
-        local users = state_get("users")
-        local hasOfficer = false
-        for i, iter in ipairs(users) do
-            if (
-                command_source == iter.source and
-                iter.character and
-                iter.character.__typename == "Officer"
-            ) then
-                hasOfficer = true
-                break
-            end
-        end
-        if (hasOfficer) then
-            SendNUIMessage({action = "showMdt"})
-            SetNuiFocus(true, true)
-        else
-            TriggerEvent('chat:addMessage', {
-                color = { 255, 0, 0},
-                multiline = true,
-                args = {"MDT", "Only users with an active officer can open the MDT"}
-            })
-        end
+        SendNUIMessage({action = "showMdt"})
+        SetNuiFocus(true, true)
+    end
+)
+
+RegisterNetEvent("data:send_chat")
+AddEventHandler(
+    "data:send_chat",
+    function(message)
+        print_debug("RECEIVED REQUEST FROM SERVER TO SEND A CHAT MESSAGE: " .. message)
+        sendChat(message)
     end
 )
 
@@ -47,6 +35,22 @@ AddEventHandler(
         print_debug("RECEIVED CONFIG FROM SERVER")
         state_set("config", jsonData)
         pass_to_nui(jsonData, "config")
+        -- Register stuff that is dependent on the state
+        RegisterCommand(
+            state.config.panic_command,
+            function(source)
+                TriggerServerEvent("start_panic")
+            end,
+            false -- Allow anyone to issue this command
+        )
+        Citizen.CreateThread(function()
+            while true do
+                Citizen.Wait(0)
+                if IsControlJustReleased(0,  tonumber(state.config.panic_keybind)) then
+                    TriggerServerEvent("start_panic")
+                end
+            end
+        end)
     end
 )
 
@@ -165,5 +169,14 @@ AddEventHandler(
     function(jsonData)
         print_debug("RECEIVED CITIZEN OFFENCES FROM SERVER")
         pass_to_nui(jsonData, "citizen_offences")
+    end
+)
+
+RegisterNetEvent("data:display_panic")
+AddEventHandler(
+    "data:display_panic",
+    function(jsonData)
+        print_debug("RECEIVED PANIC NOTIFICATION FROM SERVER")
+        pass_to_nui(jsonData, "display_panic")
     end
 )

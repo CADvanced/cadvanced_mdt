@@ -3,7 +3,7 @@ games {"gta5"}
 
 name "CADvanced MDT"
 description "CADvanced MDT, a FiveM resource that provides integration between CADvanced (https://cadvanced.app) and FiveM in the form of an in-game MDT."
-version "2.0.5"
+version "2.1.0"
 
 ui_page "ui/build/index.html"
 
@@ -12,7 +12,8 @@ files {
     "ui/build/bundle.js",
     "ui/build/css/reset.css",
     "ui/build/css/main.css",
-    "ui/build/sounds/roger.ogg"
+    "ui/build/sounds/roger.ogg",
+    "ui/build/sounds/panic.ogg"
 }
 
 client_scripts {

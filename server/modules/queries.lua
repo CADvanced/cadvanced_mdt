@@ -23,6 +23,17 @@ function queries.get_user(steam_id)
     return json.encode(query)
 end
 
+function queries.start_panic(steam_id)
+    local query = {
+        operationName = null,
+        variables = {
+            steamId = steam_id
+        },
+        query = 'mutation ($steamId: String!) { startPanic(steamId: $steamId) { id callerInfo markerX markerY callType { id name code readonly } callGrade { id name code readonly } callLocations { id name code readonly } callIncidents { id name code readonly } callDescriptions { id text } } }'
+    }
+    return json.encode(query)
+end
+
 function queries.get_all_calls()
     local query = {
         operationName = null,
@@ -34,7 +45,7 @@ end
 function queries.get_all_units()
     local query = {
         operationName = null,
-        query = "{ allUnits { id callSign unitType { id name } unitState { id name colour } UnitTypeId UnitStateId } }"
+        query = "{ allUnits { id callSign unitType { id name } unitState { id name colour code } UnitTypeId UnitStateId } }"
     }
     return json.encode(query)
 end
@@ -59,7 +70,7 @@ function queries.get_unit(unit_id)
     local query = {
         operationname = null,
         query = _doSub(
-            "{ getUnit(id: $x) { id callSign unitType { id name } unitState { id name colour } UnitTypeId UnitStateId } }",
+            "{ getUnit(id: $x) { id callSign unitType { id name } unitState { id name colour code } UnitTypeId UnitStateId } }",
             {x = unit_id}
         )
     }
@@ -185,7 +196,7 @@ function queries.set_unit_state(props, unit)
             UnitStateId = props.stateId,
             UnitTypeId = unit.UnitTypeId
         },
-        query = "mutation ($id: ID!, $callSign: String!, $UnitTypeId: ID!, $UnitStateId: ID!) { updateUnit(id: $id, callSign: $callSign, UnitTypeId: $UnitTypeId, UnitStateId: $UnitStateId) { id callSign unitType { id name } unitState { id name colour } UnitTypeId UnitStateId } }"
+        query = "mutation ($id: ID!, $callSign: String!, $UnitTypeId: ID!, $UnitStateId: ID!) { updateUnit(id: $id, callSign: $callSign, UnitTypeId: $UnitTypeId, UnitStateId: $UnitStateId) { id callSign unitType { id name } unitState { id name colour code } UnitTypeId UnitStateId } }"
     }
     return json.encode(query)
 end
