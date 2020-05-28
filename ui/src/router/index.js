@@ -5,7 +5,6 @@ import Home from '../components/main/Home.vue';
 import Status from '../components/main/status/Status.vue';
 import SearchCitizens from '../components/main/search/citizens/SearchCitizens.vue';
 import SearchVehicles from '../components/main/search/vehicles/SearchVehicles.vue';
-import CreateOffence from '../components/main/create/offence/CreateOffence.vue';
 import ComingSoon from '../components/reusable/ComingSoon.vue';
 
 Vue.use(VueRouter);
@@ -50,7 +49,7 @@ const routes = [
     {
         path: '/create/incident',
         components: {
-            create: CreateOffence
+            create: ComingSoon
         }
     },
     {

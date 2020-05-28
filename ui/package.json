@@ -1,6 +1,6 @@
 {
     "name": "cadvanced_mdt",
-    "version": "2.1.1",
+    "version": "2.1.2",
     "description": "The Vue powered UI for the CADvanced MDT",
     "main": "index.js",
     "scripts": {
