@@ -106,7 +106,10 @@ export default {
                                 'setPanicIsActive',
                                 event.data.data
                             );
-                            this.playPanic();
+                            const officer = this.$store.getters.getActiveOfficer;
+                            if (officer) {
+                                this.playPanic();
+                            }
                             const conf = this.$store.getters.getResourceConfig;
                             const panicCallId = parseInt(
                                 event.data.data.call_id
