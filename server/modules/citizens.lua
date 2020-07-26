@@ -9,8 +9,9 @@ function citizens.search_citizens(search, callback, src)
     api.request(
         q_search_citizens,
         function(response)
+            response = json.decode(response)
             if response.error == nil then
-                local received = response.result.data.searchCitizens
+                local received = response.data.searchCitizens
                 -- Send client the search results
                 print_debug("SENDING ALL CLIENTS CITIZEN SEARCH RESULTS")
                 callback(received, "citizen_search_results", src)
@@ -26,13 +27,14 @@ function citizens.get_citizen_offences(data, callback)
     api.request(
         q_get_citizen_offences,
         function(response)
-            if response.error == nil then
-                local received = response.result.data.getCitizen
+            local decoded = json.decode(response)
+            if decoded.error == nil then
+                local received = response
                 -- Send client the offences
                 print_debug("SENDING ALL CLIENTS CITIZEN OFFENCES")
                 callback(received, "citizen_offences")
             else
-                print_debug(response.error)
+                print_debug(decoded.error)
             end
         end
     )
@@ -44,15 +46,49 @@ function citizens.get_all_markers(pass_to_client)
     api.request(
         q_get_all_citizen_markers,
         function(response)
+            response = json.decode(response)
             if response.error == nil then
                 local citizen_markers = {}
-                for _, marker in ipairs(response.result.data.allCitizenMarkers) do
+                for _, marker in ipairs(response.data.allCitizenMarkers) do
                     table.insert(citizen_markers, marker)
                 end
                 state_set("citizen_markers", citizen_markers)
                 if (pass_to_client ~= nil and pass_to_client) then
                     client_sender.pass_data(state.citizen_markers, "citizen_markers")
                 end
+            else
+                print_debug(response.error)
+            end
+        end
+    )
+end
+
+-- Update a citizen
+function citizens.update_citizen(id)
+    local q_get_citizen = queries.get_citizen(id)
+    print_debug("UPDATING CITIZEN " .. id)
+    api.request(
+        q_get_citizen,
+        function(response)
+            response = json.decode(response)
+            if response.error == nil then
+                print_debug("PARSING UPDATED CITIZEN")
+                local received = response.data.getCitizen
+                local ex_citizens = state_get("citizens")
+                local found = false
+                for i, iter in ipairs(ex_citizens) do
+                    if (iter.id == received.id) then
+                        ex_citizens[i] = received
+                        found = true
+                    end
+                end
+                if not found then
+                    table.insert(ex_citizens, received)
+                end
+                state_set("citizens", ex_citizens)
+                -- Send client the updated citizen
+                print_debug("SENDING ALL CLIENTS UPDATED CITIZEN")
+                client_sender.pass_data(received, "citizen")
             else
                 print_debug(response.error)
             end
@@ -71,6 +107,7 @@ function citizens.add_marker(data)
     api.request(
         q_attach_marker_to_citizen,
         function(response)
+            response = json.decode(response)
             if response.error ~= nil then
                 print_debug(response.error)
             end
@@ -84,6 +121,7 @@ function citizens.remove_marker(data)
     api.request(
         q_detach_marker_from_citizen,
         function(response)
+            response = json.decode(response)
             if response.error ~= nil then
                 print_debug(response.error)
             end

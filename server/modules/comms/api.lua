@@ -14,7 +14,7 @@ function api.request(query, callback)
                 print_debug("CADvanced: ERROR - Unable to perform query " .. query .. ", error " .. errorCode)
                 callback({error = errorCode})
             end
-            callback({result = json.decode(resultData)})
+            callback(resultData)
         end,
         "POST",
         query,

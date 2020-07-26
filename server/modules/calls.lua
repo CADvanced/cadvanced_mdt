@@ -10,9 +10,10 @@ function calls.get_all_calls(pass_to_client)
     api.request(
         q_all_calls,
         function(response)
+            response = json.decode(response)
             if response.error == nil then
                 local cll = {}
-                for _, call in ipairs(response.result.data.allCalls) do
+                for _, call in ipairs(response.data.allCalls) do
                     table.insert(cll, call)
                 end
                 state_set("calls", cll)
@@ -33,9 +34,10 @@ function calls.update_call(id)
     api.request(
         q_get_call,
         function(response)
+            response = json.decode(response)
             if response.error == nil then
                 print_debug("PARSING UPDATED CALL")
-                local received = response.result.data.getCall
+                local received = response.data.getCall
                 local ex_calls = state_get("calls")
                 local found = false
                 for i, iter in ipairs(ex_calls) do

@@ -10,9 +10,10 @@ function vehicles.get_all_markers(pass_to_client)
     api.request(
         q_get_all_vehicle_markers,
         function(response)
+            response = json.decode(response)
             if response.error == nil then
                 local vehicle_markers = {}
-                for _, marker in ipairs(response.result.data.allVehicleMarkers) do
+                for _, marker in ipairs(response.data.allVehicleMarkers) do
                     table.insert(vehicle_markers, marker)
                 end
                 state_set("vehicle_markers", vehicle_markers)
@@ -37,9 +38,10 @@ function vehicles.get_all_models(pass_to_client)
     api.request(
         q_get_all_vehicle_models,
         function(response)
+            response = json.decode(response)
             if response.error == nil then
                 local vehicle_models = {}
-                for _, model in ipairs(response.result.data.allVehicleModels) do
+                for _, model in ipairs(response.data.allVehicleModels) do
                     table.insert(vehicle_models, model)
                 end
                 state_set("vehicle_models", vehicle_models)
@@ -64,6 +66,7 @@ function vehicles.add_marker(data)
     api.request(
         q_attach_marker_to_vehicle,
         function(response)
+            response = json.decode(response)
             if response.error ~= nil then
                 print_debug(response.error)
             end
@@ -77,6 +80,7 @@ function vehicles.remove_marker(data)
     api.request(
         q_detach_marker_from_vehicle,
         function(response)
+            response = json.decode(response)
             if response.error ~= nil then
                 print_debug(response.error)
             end
@@ -89,8 +93,9 @@ function vehicles.search_vehicles(search, callback, src)
     api.request(
         q_search_vehicles,
         function(response)
+            response = json.decode(response)
             if response.error == nil then
-                local received = response.result.data.searchVehicles
+                local received = response.data.searchVehicles
                 -- Send client the search results
                 print_debug("SENDING ALL CLIENTS VEHICLE SEARCH RESULTS")
                 callback(received, "vehicle_search_results", src)

@@ -201,6 +201,61 @@ RegisterNUICallback(
     end
 )
 
+-- Callback to handle saving of an offence's metadata
+RegisterNUICallback(
+    "sendOffenceMeta",
+    function(data, cb)
+        -- Tell the server to send the metadata
+        print_debug("RECEIVED REQUEST FROM NUI TO SAVE OFFENCE METADATA")
+        print_debug("SENDING METADATA SAVE REQUEST TO SERVER")
+        TriggerServerEvent("send_offence_metadata", data)
+        if cb then
+            cb()
+        end
+    end
+)
+
+-- Callback to handle saving of a ticket
+RegisterNUICallback(
+    "saveTicket",
+    function(data, cb)
+        -- Tell the server to do it
+        print_debug("RECEIVED REQUEST FROM NUI TO SAVE TICKET")
+        print_debug("SENDING TICKET SAVE REQUEST TO SERVER")
+        TriggerServerEvent("save_ticket", data)
+        if cb then
+            cb()
+        end
+    end
+)
+
+-- Callback to handle saving of an arrest
+RegisterNUICallback(
+    "saveArrest",
+    function(data, cb)
+        -- Tell the server to do it
+        print_debug("RECEIVED REQUEST FROM NUI TO SAVE ARREST")
+        print_debug("SENDING ARREST SAVE REQUEST TO SERVER")
+        TriggerServerEvent("save_arrest", data)
+        if cb then
+            cb()
+        end
+    end
+)
+
+RegisterNUICallback(
+    "deleteOffence",
+    function(data, cb)
+        -- Tell the server to delete the offence
+        print_debug("RECEIVED REQUEST FROM NUI TO DELETE OFFENCE")
+        print_debug("SENDING DELETE OFFENCE REQUEST TO SERVER")
+        TriggerServerEvent("delete_offence", data)
+        if cb then
+            cb()
+        end
+    end
+)
+
 local active_blip
 
 function set_call_marker(call)

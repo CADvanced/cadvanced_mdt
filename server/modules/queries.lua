@@ -88,6 +88,17 @@ function queries.get_call(call_id)
     return json.encode(query)
 end
 
+function queries.get_citizen(citizen_id)
+    local query = {
+        operationname = null,
+        query = _doSub(
+            '{ getCitizen(id: $x) { id firstName lastName address postalCode GenderId gender { id name } EthnicityId ethnicity { id name } vehicles { id colour licencePlate vehicleModel { id name } insuranceStatus { id name } markers { id name } } weapons { id weaponType { id name } weaponStatus { id name } } licences { id licenceType { id name } licenceStatus { id name } } warrants { id validFrom validTo details } markers { id name } offences { id date time location ArrestId arrest { id date time OfficerId officer { id firstName lastName } charges { id name } } charges { id name } TicketId ticket { id date time location points fine notes OfficerId officer { id firstName lastName } } } dateOfBirth weight height hair eyes active createdAt } }',
+            {x = citizen_id}
+        )
+    }
+    return json.encode(query)
+end
+
 function queries.search_citizens(props)
     -- Ensure all properties are populated, as we need to substitute
     -- all placeholders in the query
@@ -245,6 +256,129 @@ function queries.detach_marker_from_vehicle(props)
             MarkerId = props.markerId
         },
         query = "mutation ($VehicleId: ID!, $MarkerId: ID!) { detachMarkerFromVehicle(VehicleId: $VehicleId, MarkerId: $MarkerId) }"
+    }
+    return json.encode(query)
+end
+
+function queries.get_all_charges()
+    local query = {
+        operationName = null,
+        query = "{ allCharges { id name } } "
+    }
+    return json.encode(query)
+end
+
+function queries.create_offence(props)
+    local query = {
+        operationName = null,
+        variables = {
+            CitizenId = props.CitizenId,
+            charges = {},
+            date = props.date,
+            location = props.location,
+            time = props.time
+        },
+        query = "mutation ($date: String, $time: String, $location: String, $charges: [ChargeInput], $CitizenId: ID! ) { createOffence(date: $date, time: $time, location: $location, charges: $charges, CitizenId: $CitizenId) { id date time location ArrestId arrest { id date time OfficerId officer { id firstName lastName } charges { id name } } charges { id name } TicketId ticket { id date time location points fine notes OfficerId officer { id firstName lastName } } }}"
+    }
+    return json.encode(query)
+end
+
+function queries.update_offence(props)
+    local query = {
+        operationName = null,
+        variables = {
+            id = props.id,
+            CitizenId = props.CitizenId,
+            charges = props.charges,
+            date = props.date,
+            location = props.location,
+            time = props.time
+        },
+        query = "mutation ($id: ID!, $date: String, $time: String, $location: String, $charges: [ChargeInput], $CitizenId: ID! ) { updateOffence(id: $id, date: $date, time: $time, location: $location, charges: $charges, CitizenId: $CitizenId) { id date time location ArrestId arrest { id date time OfficerId officer { id firstName lastName } charges { id name } } charges { id name } TicketId ticket { id date time location points fine notes OfficerId officer { id firstName lastName } } }}"
+    }
+    return json.encode(query)
+end
+
+function queries.create_ticket(props)
+    local query = {
+        operationName = null,
+        variables = {
+            CitizenId = props.CitizenId,
+            OffenceId = props.OffenceId,
+            OfficerId = props.OfficerId,
+            date = props.date,
+            fine = props.fine,
+            location = props.location,
+            notes = props.notes,
+            points = props.points,
+            time = props.time
+        },
+        query = "mutation ($date: String, $time: String, $location: String, $points: String, $fine: String, $notes: String, $CitizenId: ID!, $OfficerId: ID!, $OffenceId: ID!) { createTicket(date: $date, time: $time, location: $location, points: $points, fine: $fine, notes: $notes, CitizenId: $CitizenId, OfficerId: $OfficerId, OffenceId: $OffenceId) { id date time location points fine notes OfficerId officer { id firstName lastName } }}"
+    }
+    return json.encode(query)
+end
+
+function queries.update_ticket(props)
+    local query = {
+        operationName = null,
+        variables = {
+            id = props.id,
+            CitizenId = props.CitizenId,
+            OffenceId = props.OffenceId,
+            OfficerId = props.OfficerId,
+            date = props.date,
+            fine = props.fine,
+            location = props.location,
+            notes = props.notes,
+            points = props.points,
+            time = props.time
+        },
+        query = "mutation ($id: ID!, $date: String, $time: String, $location: String, $points: String, $fine: String, $notes: String, $CitizenId: ID!, $OfficerId: ID!, $OffenceId: ID!) { updateTicket(id: $id, date: $date, time: $time, location: $location, points: $points, fine: $fine, notes: $notes, CitizenId: $CitizenId, OfficerId: $OfficerId, OffenceId: $OffenceId) { id date time location points fine notes OfficerId officer { id firstName lastName } }}"
+    }
+    return json.encode(query)
+end
+
+function queries.create_arrest(props)
+    local query = {
+        operationName = null,
+        variables = {
+            date = props.date,
+            time = props.time,
+            charges = props.charges,
+            OfficerId = props.OfficerId,
+            OffenceId = props.OffenceId,
+            CitizenId = props.CitizenId
+        },
+        query = "mutation ($date: String, $time: String, $charges: [ChargeInput], $OfficerId: ID!, $OffenceId: ID!, $CitizenId: ID!) { createArrest(date: $date, time: $time, charges: $charges, OfficerId: $OfficerId, OffenceId: $OffenceId, CitizenId: $CitizenId) { id date time OfficerId officer { id firstName lastName  } charges { id name  } OffenceId  }}"
+    }
+    return json.encode(query)
+end
+
+function queries.update_arrest(props)
+    local query = {
+        operationName = null,
+        variables = {
+            id = props.id,
+            date = props.date,
+            time = props.time,
+            charges = props.charges,
+            OfficerId = props.OfficerId,
+            OffenceId = props.OffenceId,
+            CitizenId = props.CitizenId
+        },
+        query = "mutation ($id: ID!, $date: String, $time: String, $charges: [ChargeInput], $OfficerId: ID!, $OffenceId: ID!, $CitizenId: ID!) { updateArrest(id: $id, date: $date, time: $time, charges: $charges, OfficerId: $OfficerId, OffenceId: $OffenceId, CitizenId: $CitizenId) { id date time OfficerId officer { id firstName lastName } charges { id name } OffenceId } }"
+    }
+    return json.encode(query)
+end
+
+function queries.delete_offence(props)
+    local query = {
+        operationName = null,
+        variables = {
+            id = props.id,
+            CitizenId = props.CitizenId
+        },
+        query = "mutation ($id: ID!, $CitizenId: ID!) { deleteOffence(id: $id, CitizenId: $CitizenId)}"
     }
     return json.encode(query)
 end

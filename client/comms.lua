@@ -90,6 +90,15 @@ AddEventHandler(
     end
 )
 
+RegisterNetEvent("data:charges")
+AddEventHandler(
+    "data:charges",
+    function(jsonData)
+        print_debug("RECEIVED CHARGES FROM SERVER")
+        pass_to_nui(jsonData, "charges")
+    end
+)
+
 RegisterNetEvent("data:vehicle_models")
 AddEventHandler(
     "data:vehicle_models",
@@ -154,6 +163,15 @@ AddEventHandler(
     end
 )
 
+RegisterNetEvent("data:citizen")
+AddEventHandler(
+    "data:citizen",
+    function(jsonData)
+        print_debug("RECEIVED CITIZEN FROM SERVER")
+        pass_to_nui(jsonData, "citizen")
+    end
+)
+
 RegisterNetEvent("data:vehicle_search_results")
 AddEventHandler(
     "data:vehicle_search_results",
@@ -166,9 +184,9 @@ AddEventHandler(
 RegisterNetEvent("data:citizen_offences")
 AddEventHandler(
     "data:citizen_offences",
-    function(jsonData)
+    function(stringTxt)
         print_debug("RECEIVED CITIZEN OFFENCES FROM SERVER")
-        pass_to_nui(jsonData, "citizen_offences")
+        pass_to_nui(stringTxt, "citizen_offences")
     end
 )
 

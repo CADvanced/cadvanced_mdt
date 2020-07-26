@@ -4,6 +4,7 @@ local citizens = module("server/modules/citizens")
 local users = module("server/modules/users")
 local units = module("server/modules/units")
 local vehicles = module("server/modules/vehicles")
+local legal = module("server/modules/legal")
 local client_sender = module("server/modules/comms/client_sender")
 
 local client_receiver = {}
@@ -41,6 +42,7 @@ function client_receiver.client_event_handlers()
             client_sender.pass_data(state_get("citizen_markers"), "citizen_markers", source)
             client_sender.pass_data(state_get("vehicle_markers"), "vehicle_markers", source)
             client_sender.pass_data(state_get("vehicle_models"), "vehicle_models", source)
+            client_sender.pass_data(state_get("charges"), "charges", source)
             client_sender.pass_data(user_helpers.get_steam_id(source), "steam_id", source)
         end
     )
@@ -170,6 +172,47 @@ function client_receiver.client_event_handlers()
             end
         end
     )
+
+    -- Send an offence's metadata
+    RegisterNetEvent("send_offence_metadata")
+    AddEventHandler(
+        "send_offence_metadata",
+        function(data)
+            print_debug("RECEIVED REQUEST FROM CLIENT TO SEND OFFENCE METADATA")
+            legal.send_offence_metadata(data)
+        end
+    )
+
+    -- Save a ticket
+    RegisterNetEvent("save_ticket")
+    AddEventHandler(
+        "save_ticket",
+        function(data)
+            print_debug("RECEIVED REQUEST FROM CLIENT TO SAVE A TICKET")
+            legal.save_ticket(data)
+        end
+    )
+
+    -- Save an arrest
+    RegisterNetEvent("save_arrest")
+    AddEventHandler(
+        "save_arrest",
+        function(data)
+            print_debug("RECEIVED REQUEST FROM CLIENT TO SAVE AN ARREST")
+            legal.save_arrest(data)
+        end
+    )
+
+    -- Delete an offence
+    RegisterNetEvent("delete_offence")
+    AddEventHandler(
+        "delete_offence",
+        function(data)
+            print_debug("RECEIVED REQUEST FROM CLIENT TO DELETE OFFENCE")
+            legal.delete_offence(data)
+        end
+    )
+
 end
 
 return client_receiver

@@ -13,9 +13,10 @@ function users.get_whitelisted()
         api.request(
             q_whitelisted,
             function(response)
+                response = json.decode(response)
                 if response.error == nil then
                     local whitelist = {}
-                    for _, wl in ipairs(response.result.data.allWhitelisted) do
+                    for _, wl in ipairs(response.data.allWhitelisted) do
                         table.insert(whitelist, wl.steamId)
                     end
                     state_set("whitelist", whitelist)
@@ -35,9 +36,10 @@ function users.get_all_user_ranks(pass_to_client)
     api.request(
         q_get_all_user_ranks,
         function(response)
+            response = json.decode(response)
             if response.error == nil then
                 local user_ranks = {}
-                for _, rank in ipairs(response.result.data.allUserRanks) do
+                for _, rank in ipairs(response.data.allUserRanks) do
                     table.insert(user_ranks, rank)
                 end
                 state_set("user_ranks", user_ranks)
@@ -150,9 +152,10 @@ function users.populate_player(steamId)
     api.request(
         q_user,
         function(response)
+            response = json.decode(response)
             if response.error == nil then
                 local usr = state_get("users")
-                local returned_user = response.result.data.getUser
+                local returned_user = response.data.getUser
                 if returned_user ~= nil then
                     if is_new then
                         returned_user.source = my_source
@@ -248,6 +251,7 @@ function users.update_user_units(user_id)
     api.request(
         q_update_user_units,
         function(response)
+            response = json.decode(response)
             if response.error ~= nil then
                 print_debug(response.error)
             end

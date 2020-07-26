@@ -10,9 +10,10 @@ function units.get_all_units(pass_to_client)
     api.request(
         q_all_units,
         function(response)
+            response = json.decode(response)
             if response.error == nil then
                 local unt = {}
-                for _, unit in ipairs(response.result.data.allUnits) do
+                for _, unit in ipairs(response.data.allUnits) do
                     table.insert(unt, unit)
                 end
                 state_set("units", unt)
@@ -32,9 +33,10 @@ function units.get_all_unit_states(pass_to_client)
     api.request(
         q_all_unit_states,
         function(response)
+            response = json.decode(response)
             if response.error == nil then
                 local us = {}
-                for _, state in ipairs(response.result.data.allUnitStates) do
+                for _, state in ipairs(response.data.allUnitStates) do
                     table.insert(us, state)
                 end
                 state_set("unit_states", us)
@@ -54,9 +56,10 @@ function units.get_all_user_units(pass_to_client)
     api.request(
         q_all_user_units,
         function(response)
+            response = json.decode(response)
             if response.error == nil then
                 local user_units = {}
-                for _, assignment in ipairs(response.result.data.allUserUnits) do
+                for _, assignment in ipairs(response.data.allUserUnits) do
                     table.insert(user_units, assignment)
                 end
                 state_set("user_units", user_units)
@@ -92,9 +95,10 @@ function units.update_unit(id)
     api.request(
         q_get_unit,
         function(response)
+            response = json.decode(response)
             if response.error == nil then
                 print_debug("PARSING UPDATED UNIT")
-                local received = response.result.data.getUnit
+                local received = response.data.getUnit
                 local ex_units = state_get("units")
                 local found = false
                 for i, iter in ipairs(ex_units) do
@@ -126,9 +130,10 @@ function units.set_unit_state(data)
         api.request(
             q_set_unit_state,
             function(response)
+                response = json.decode(response)
                 if response.error == nil then
                     print_debug("PARSING UPDATED UNIT")
-                    local received = response.result.data.updateUnit
+                    local received = response.data.updateUnit
                     local ex_units = state_get("units")
                     local found = false
                     for i, iter in ipairs(ex_units) do
