@@ -19,6 +19,54 @@ AddEventHandler(
     end
 )
 
+RegisterNetEvent("data:open_terminal")
+AddEventHandler(
+    "data:open_terminal",
+    function(jsonData)
+        state_set("terminal_dragging", "no")
+        print_debug("RECEIVED REQUEST FROM SERVER TO OPEN TERMINAL")
+        SendNUIMessage({action = "openTerminal"})
+    end
+)
+
+RegisterNetEvent("data:close_terminal")
+AddEventHandler(
+    "data:close_terminal",
+    function(jsonData)
+        print_debug("RECEIVED REQUEST FROM SERVER TO CLOSE TERMINAL")
+        SendNUIMessage({action = "closeTerminal"})
+        SetNuiFocus(false, false)
+    end
+)
+
+RegisterNetEvent("data:terminal_drag_toggle")
+AddEventHandler(
+    "data:terminal_drag_toggle",
+    function(newState)
+        print_debug("RECEIVED REQUEST FROM SERVER TO TOGGLE TERMINAL DRAGGING")
+        local current_state = state_get("terminal_dragging")
+        if current_state == "yes" then
+            SendNUIMessage({action = "terminalDraggingOff"})
+            SetNuiFocus(false, false)
+            state_set("terminal_dragging", "no")
+        else
+            SendNUIMessage({action = "terminalDraggingOn"})
+            SetNuiFocus(true, true)
+            state_set("terminal_dragging", "yes")
+        end
+    end
+)
+
+RegisterNetEvent("data:terminal_drag_off")
+AddEventHandler(
+    "data:terminal_drag_off",
+    function(jsonData)
+        print_debug("RECEIVED REQUEST FROM SERVER TO PREVENT TERMINAL FROM BEING DRAGGED")
+        SendNUIMessage({action = "terminalDraggingOff"})
+        SetNuiFocus(false, false)
+    end
+)
+
 RegisterNetEvent("data:send_chat")
 AddEventHandler(
     "data:send_chat",
@@ -36,6 +84,9 @@ AddEventHandler(
         state_set("config", jsonData)
         pass_to_nui(jsonData, "config")
         -- Register stuff that is dependent on the state
+        --
+        -- Start a panic
+        -- Command
         RegisterCommand(
             state.config.panic_command,
             function(source)
@@ -43,11 +94,84 @@ AddEventHandler(
             end,
             false -- Allow anyone to issue this command
         )
+        -- Keybind
         Citizen.CreateThread(function()
             while true do
                 Citizen.Wait(0)
                 if IsControlJustReleased(0,  tonumber(state.config.panic_keybind)) then
                     TriggerServerEvent("start_panic")
+                end
+            end
+        end)
+        -- Open the terminal
+        -- Command
+        RegisterCommand(
+            state.config.terminal_open_command,
+            function(source)
+                TriggerServerEvent("open_terminal")
+            end,
+            false -- Allow anyone to issue this command
+        )
+        -- Keybind
+        Citizen.CreateThread(function()
+            while true do
+                Citizen.Wait(0)
+                if state.config.terminal_open_keybind_first ~= nil then
+                    if IsControlPressed(1, tonumber(state.config.terminal_open_keybind_first)) and IsControlJustReleased(1, tonumber(state.config.terminal_open_keybind_second)) then
+                        TriggerServerEvent("open_terminal")
+                    end
+                else
+                    if IsControlJustReleased(1, tonumber(state.config.terminal_open_keybind_second)) then
+                        TriggerServerEvent("open_terminal")
+                    end
+                end
+            end
+        end)
+        -- Close the terminal
+        -- Command
+        RegisterCommand(
+            state.config.terminal_close_command,
+            function(source)
+                TriggerServerEvent("close_terminal")
+            end,
+            false -- Allow anyone to issue this command
+        )
+        -- Keybind
+        Citizen.CreateThread(function()
+            while true do
+                Citizen.Wait(0)
+                if state.config.terminal_close_keybind_first ~= nil then
+                    if IsControlPressed(1, tonumber(state.config.terminal_close_keybind_first)) and IsControlJustReleased(1, tonumber(state.config.terminal_close_keybind_second)) then
+                        TriggerServerEvent("close_terminal")
+                    end
+                else
+                    if IsControlJustReleased(1, tonumber(state.config.terminal_close_keybind_second)) then
+                        TriggerServerEvent("close_terminal")
+                    end
+                end
+            end
+        end)
+        -- Allow the terminal to be moved
+        -- Command
+        RegisterCommand(
+            state.config.terminal_move_command,
+            function(source)
+                TriggerServerEvent("terminal_drag_toggle")
+            end,
+            false -- Allow anyone to issue this command
+        )
+        -- Keybind
+        Citizen.CreateThread(function()
+            while true do
+                Citizen.Wait(0)
+                if state.config.terminal_move_keybind_first ~= nil then
+                    if IsControlPressed(1, tonumber(state.config.terminal_move_keybind_first)) and IsControlJustReleased(1, tonumber(state.config.terminal_move_keybind_second)) then
+                        TriggerServerEvent("terminal_drag_toggle")
+                    end
+                else
+                    if IsControlJustReleased(1, tonumber(state.config.terminal_move_keybind_second)) then
+                        TriggerServerEvent("terminal_drag_toggle")
+                    end
                 end
             end
         end)

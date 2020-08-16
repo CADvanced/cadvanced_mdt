@@ -58,6 +58,30 @@ function config.sanity_check()
             print("****** CADVANCED: Missing panic_create_marker value in config ******")
             return false
         end
+        if conf.terminal_open_command == nil or conf.terminal_open_command == "" then
+            print("****** CADVANCED: Missing terminal_open_command value in config ******")
+            return false
+        end
+        if conf.terminal_close_command == nil or conf.terminal_close_command == "" then
+            print("****** CADVANCED: Missing terminal_close_command value in config ******")
+            return false
+        end
+        if conf.terminal_open_keybind_second == nil or conf.terminal_open_keybind_second == "" then
+            print("****** CADVANCED: Missing terminal_open_keybind_second value in config ******")
+            return false
+        end
+        if conf.terminal_close_keybind_second == nil or conf.terminal_close_keybind_second == "" then
+            print("****** CADVANCED: Missing terminal_close_keybind_second value in config ******")
+            return false
+        end
+        if conf.terminal_move_command == nil or conf.terminal_move_command == "" then
+            print("****** CADVANCED: Missing terminal_move_command value in config ******")
+            return false
+        end
+        if conf.terminal_move_keybind_second == nil or conf.terminal_move_keybind_second == "" then
+            print("****** CADVANCED: Missing terminal_move_keybind_second value in config ******")
+            return false
+        end
         return true
     else
         print(

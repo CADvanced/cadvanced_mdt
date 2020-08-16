@@ -15,6 +15,15 @@ cfg.panic_flash_mdt = true -- When a panic call is created, flash the MDT border
 cfg.panic_play_tone = true -- When a panic call is created, play a panic tone
 cfg.panic_duration = 10 -- Time in seconds the MDT should flash and the tone should play
 cfg.panic_create_marker = true -- When a panic call is created, create a marker and route for all assigned units
+cfg.terminal_open_command = "to" -- The command ( WITHOUT THE / ) to be used to open the terminal
+cfg.terminal_open_keybind_first = "19" -- The first keybind to use to open the terminal (default Left Alt)
+cfg.terminal_open_keybind_second = "161" -- The second keybind to use to open the terminal (default 7)
+cfg.terminal_close_command = "tc" -- The command ( WITHOUT THE / ) to be used to close the terminal
+cfg.terminal_close_keybind_first = "19" -- The keybind to use to close the terminal (default Left Alt)
+cfg.terminal_close_keybind_second = "163" -- The keybind to use to close the terminal (default 9)
+cfg.terminal_move_command = "mt" -- The command ( WITHOUT THE / ) to be used to activate terminal "move" mode
+cfg.terminal_move_keybind_first = "19" -- The keybind to use to move the terminal (default Left Alt)
+cfg.terminal_move_keybind_second = "162" -- The keybind to use to close the terminal (default 8)
 
 -- ##################################
 

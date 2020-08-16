@@ -32,7 +32,16 @@ function client_receiver.client_event_handlers()
                 panic_flash_mdt = conf.val("panic_flash_mdt"),
                 panic_play_tone = conf.val("panic_play_tone"),
                 panic_create_marker = conf.val("panic_create_marker"),
-                panic_duration = conf.val("panic_duration")
+                panic_duration = conf.val("panic_duration"),
+                terminal_open_command = conf.val("terminal_open_command"),
+                terminal_open_keybind_first = conf.val("terminal_open_keybind_first"),
+                terminal_open_keybind_second = conf.val("terminal_open_keybind_second"),
+                terminal_close_command = conf.val("terminal_close_command"),
+                terminal_close_keybind_first = conf.val("terminal_close_keybind_first"),
+                terminal_close_keybind_second = conf.val("terminal_close_keybind_second"),
+                terminal_move_command = conf.val("terminal_move_command"),
+                terminal_move_keybind_first = conf.val("terminal_move_keybind_first"),
+                terminal_move_keybind_second = conf.val("terminal_move_keybind_second")
             }, "config", source)
             client_sender.pass_data(state_get("calls"), "calls", source)
             client_sender.pass_data(state_get("units"), "units", source)
@@ -55,6 +64,48 @@ function client_receiver.client_event_handlers()
             print_debug("RECEIVED REQUEST FROM CLIENT TO OPEN MDT FOR USER " .. source)
             if (hasOfficer(source)) then
                 client_sender.pass_data(nil, "open_mdt", source)
+            else
+                client_sender.pass_data("Only an officer can do this", "send_chat", source)
+            end
+        end
+    )
+
+    -- Open the terminal
+    RegisterNetEvent("open_terminal")
+    AddEventHandler(
+        "open_terminal",
+        function()
+            print_debug("RECEIVED REQUEST FROM CLIENT TO OPEN TERMINAL FOR USER " .. source)
+            if (hasOfficer(source)) then
+                client_sender.pass_data(nil, "open_terminal", source)
+            else
+                client_sender.pass_data("Only an officer can do this", "send_chat", source)
+            end
+        end
+    )
+
+    -- Close the terminal
+    RegisterNetEvent("close_terminal")
+    AddEventHandler(
+        "close_terminal",
+        function()
+            print_debug("RECEIVED REQUEST FROM CLIENT TO CLOSE TERMINAL FOR USER " .. source)
+            if (hasOfficer(source)) then
+                client_sender.pass_data(nil, "close_terminal", source)
+            else
+                client_sender.pass_data("Only an officer can do this", "send_chat", source)
+            end
+        end
+    )
+
+    -- Toggle the terminal draggable state
+    RegisterNetEvent("terminal_drag_toggle")
+    AddEventHandler(
+        "terminal_drag_toggle",
+        function()
+            print_debug("RECEIVED REQUEST FROM CLIENT TO TOGGLE THE TERMINAL DRAG STATE FOR USER " .. source)
+            if (hasOfficer(source)) then
+                client_sender.pass_data(nil, "terminal_drag_toggle", source)
             else
                 client_sender.pass_data("Only an officer can do this", "send_chat", source)
             end

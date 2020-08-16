@@ -256,6 +256,19 @@ RegisterNUICallback(
     end
 )
 
+-- Callback for stopping terminal dragging
+RegisterNUICallback(
+    "terminalDraggingStop",
+    function(_, cb)
+        -- Tell the server to start the panic
+        print_debug("RECEIVED REQUEST FROM NUI TO STOP TERMINAL DRAGGING")
+        TriggerServerEvent("terminal_drag_toggle")
+        if cb then
+            cb()
+        end
+    end
+)
+
 local active_blip
 
 function set_call_marker(call)
