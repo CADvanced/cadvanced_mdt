@@ -50,20 +50,11 @@ AddEventHandler(
             SetNuiFocus(false, false)
             state_set("terminal_dragging", "no")
         else
+            SendNUIMessage({action = "openTerminal"})
             SendNUIMessage({action = "terminalDraggingOn"})
             SetNuiFocus(true, true)
             state_set("terminal_dragging", "yes")
         end
-    end
-)
-
-RegisterNetEvent("data:terminal_drag_off")
-AddEventHandler(
-    "data:terminal_drag_off",
-    function(jsonData)
-        print_debug("RECEIVED REQUEST FROM SERVER TO PREVENT TERMINAL FROM BEING DRAGGED")
-        SendNUIMessage({action = "terminalDraggingOff"})
-        SetNuiFocus(false, false)
     end
 )
 
