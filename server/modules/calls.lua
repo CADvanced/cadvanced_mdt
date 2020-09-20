@@ -65,4 +65,27 @@ function calls.repopulate_calls()
     calls.get_all_calls(true)
 end
 
+-- Get the table of all call grades
+function calls.get_all_call_grades(pass_to_client)
+    local q_get_all_call_grades = queries.get_all_call_grades()
+    api.request(
+        q_get_all_call_grades,
+        function(response)
+            response = json.decode(response)
+            if response.error == nil then
+                local call_grades = {}
+                for _, grade in ipairs(response.data.allCallGrades) do
+                    table.insert(call_grades, grade)
+                end
+                state_set("call_grades", call_grades)
+                if (pass_to_client ~= nil and pass_to_client) then
+                    client_sender.pass_data(state.call_grades, "call_grades")
+                end
+            else
+                print_debug(response.error)
+            end
+        end
+    )
+end
+
 return calls

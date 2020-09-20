@@ -121,6 +121,22 @@ function queries.search_citizens(props)
     return json.encode(query)
 end
 
+function queries.send_citizen_call(props)
+    -- Ensure all properties are populated, as we need to substitute
+    -- all placeholders in the query
+    local query = {
+        operationname = null,
+        variables = {
+            steamId = props.steamId,
+            location = props.location,
+            callerInfo = props.callerInfo,
+            notes = props.notes
+        },
+        query = 'mutation ($steamId: String!, $location: String!, $callerInfo: String!, $notes: String!) { createCitizenCall(steamId: $steamId, location: $location, callerInfo: $callerInfo, notes: $notes) { id } }'
+    }
+    return json.encode(query)
+end
+
 function queries.search_vehicles(props)
     -- Ensure all properties are populated, as we need to substitute
     -- all placeholders in the query
@@ -379,6 +395,22 @@ function queries.delete_offence(props)
             CitizenId = props.CitizenId
         },
         query = "mutation ($id: ID!, $CitizenId: ID!) { deleteOffence(id: $id, CitizenId: $CitizenId)}"
+    }
+    return json.encode(query)
+end
+
+function queries.get_all_locations()
+    local query = {
+        operationName = null,
+        query = "{ allLocations { id name } }"
+    }
+    return json.encode(query)
+end
+
+function queries.get_all_call_grades()
+    local query = {
+        operationName = null,
+        query = "{ allCallGrades { id name code } }"
     }
     return json.encode(query)
 end

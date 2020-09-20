@@ -58,6 +58,16 @@ AddEventHandler(
     end
 )
 
+RegisterNetEvent("data:open_call")
+AddEventHandler(
+    "data:open_call",
+    function(jsonData)
+        print_debug("RECEIVED REQUEST FROM SERVER TO OPEN CALL")
+        SendNUIMessage({action = "openCall"})
+        SetNuiFocus(true, true)
+    end
+)
+
 RegisterNetEvent("data:send_chat")
 AddEventHandler(
     "data:send_chat",
@@ -162,6 +172,30 @@ AddEventHandler(
                 else
                     if IsControlJustReleased(1, tonumber(state.config.terminal_move_keybind_second)) then
                         TriggerServerEvent("terminal_drag_toggle")
+                    end
+                end
+            end
+        end)
+        -- Open the call
+        -- Command
+        RegisterCommand(
+            state.config.call_command,
+            function(source)
+                TriggerServerEvent("open_call")
+            end,
+            false -- Allow anyone to issue this command
+        )
+        -- Keybind
+        Citizen.CreateThread(function()
+            while true do
+                Citizen.Wait(0)
+                if state.config.call_keybind_first ~= nil then
+                    if IsControlPressed(1, tonumber(state.config.call_keybind_first)) and IsControlJustReleased(1, tonumber(state.config.call_keybind_second)) then
+                        TriggerServerEvent("open_call")
+                    end
+                else
+                    if IsControlJustReleased(1, tonumber(state.config.call_keybind_second)) then
+                        TriggerServerEvent("open_call")
                     end
                 end
             end
@@ -302,6 +336,24 @@ AddEventHandler(
     function(stringTxt)
         print_debug("RECEIVED CITIZEN OFFENCES FROM SERVER")
         pass_to_nui(stringTxt, "citizen_offences")
+    end
+)
+
+RegisterNetEvent("data:locations")
+AddEventHandler(
+    "data:locations",
+    function(jsonData)
+        print_debug("RECEIVED LOCATIONS FROM SERVER")
+        pass_to_nui(jsonData, "locations")
+    end
+)
+
+RegisterNetEvent("data:call_grades")
+AddEventHandler(
+    "data:call_grades",
+    function(jsonData)
+        print_debug("RECEIVED CALL GRADES FROM SERVER")
+        pass_to_nui(jsonData, "call_grades")
     end
 )
 

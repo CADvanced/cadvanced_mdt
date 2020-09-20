@@ -10,6 +10,18 @@ RegisterNUICallback(
     end
 )
 
+-- Callback for hiding the call
+RegisterNUICallback(
+    "hideCall",
+    function(_, cb)
+        print_debug("RECEIVED hideCall FROM NUI")
+        SetNuiFocus(false, false)
+        if cb then
+            cb()
+        end
+    end
+)
+
 -- Callback for starting a panic
 RegisterNUICallback(
     "startPanic",
@@ -61,6 +73,19 @@ RegisterNUICallback(
         TriggerServerEvent("search_vehicles", data)
         if cb then
             cb()
+        end
+    end
+)
+
+-- Callback to handle citizen calls
+RegisterNUICallback(
+    "citizenCall",
+    function(data, cb)
+        print_debug("RECEIVED REQUEST FROM NUI TO SEND CITIZEN CALL")
+        print_debug("SENDING CITIZEN CALL OBJECT TO SERVER")
+        TriggerServerEvent("citizen_call", data)
+        if cb then
+            cb('Sent')
         end
     end
 )

@@ -26,6 +26,12 @@ cfg.terminal_close_keybind_second = "163" -- The keybind to use to close the ter
 cfg.terminal_move_command = "mt" -- The command ( WITHOUT THE / ) to be used to activate terminal "move" mode
 cfg.terminal_move_keybind_first = "19" -- The keybind to use to move the terminal (default Left Alt)
 cfg.terminal_move_keybind_second = "162" -- The keybind to use to close the terminal (default 8)
+cfg.call_command = "call" -- The command ( WITHOUT THE / ) to be used to place a call with the dispatcher
+cfg.call_keybind_first = "19" -- The first keybind to use to open the terminal (default Left Alt)
+cfg.call_keybind_second = "197" -- The second keybind to use to open the terminal (default ])
+cfg.call_number = "999" -- The number that is dialed when a citizen places a call
+cfg.call_ring_filename = "ringing_uk.ogg" -- Sound file used for ringing tone
+cfg.call_busy_filename = "busy_uk.ogg" -- Sound file used for busy tone
 
 -- ##################################
 

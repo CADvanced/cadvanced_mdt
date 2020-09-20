@@ -82,6 +82,26 @@ function config.sanity_check()
             print("****** CADVANCED: Missing terminal_move_keybind_second value in config ******")
             return false
         end
+        if conf.call_command == nil or conf.call_command == "" then
+            print("****** CADVANCED: Missing call_command value in config ******")
+            return false
+        end
+        if conf.call_keybind_second == nil or conf.call_keybind_second == "" then
+            print("****** CADVANCED: Missing call_keybind_second value in config ******")
+            return false
+        end
+        if conf.call_number == nil or conf.call_number == "" then
+            print("****** CADVANCED: Missing call_number value in config ******")
+            return false
+        end
+        if conf.call_ring_filename == nil or conf.call_ring_filename == "" then
+            print("****** CADVANCED: Missing call_ring_filename value in config ******")
+            return false
+        end
+        if conf.call_busy_filename == nil or conf.call_busy_filename == "" then
+            print("****** CADVANCED: Missing call_busy_filename value in config ******")
+            return false
+        end
         return true
     else
         print(

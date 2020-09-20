@@ -5,6 +5,8 @@ local units = module("server/modules/units")
 local citizens = module("server/modules/citizens")
 local vehicles = module("server/modules/vehicles")
 local legal = module("server/modules/legal")
+local locations = module("server/modules/locations")
+local calls = module("server/modules/calls")
 local client_receiver = module("server/modules/comms/client_receiver")
 
 local init = {}
@@ -46,6 +48,12 @@ function init.bootstrapData()
 
     -- Get all charges
     legal.get_all_charges()
+
+    -- Get all call grades
+    calls.get_all_call_grades()
+
+    -- Get all locations
+    locations.get_all_locations()
 end
 
 function init.createEventHandlers()

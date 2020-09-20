@@ -1,8 +1,19 @@
+local user_helpers = module("server/modules/helpers/users")
 local queries = module("server/modules/queries")
 local client_sender = module("server/modules/comms/client_sender")
 local api = module("server/modules/comms/api")
 
 local citizens = {}
+
+function citizens.send_call(call, callback, src)
+    call.steamId = user_helpers.get_steam_id(source)
+    local q_send_call = queries.send_citizen_call(call)
+    api.request(
+        q_send_call,
+        function(response)
+        end
+    )
+end
 
 function citizens.search_citizens(search, callback, src)
     local q_search_citizens = queries.search_citizens(search)

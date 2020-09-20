@@ -41,7 +41,13 @@ function client_receiver.client_event_handlers()
                 terminal_close_keybind_second = conf.val("terminal_close_keybind_second"),
                 terminal_move_command = conf.val("terminal_move_command"),
                 terminal_move_keybind_first = conf.val("terminal_move_keybind_first"),
-                terminal_move_keybind_second = conf.val("terminal_move_keybind_second")
+                terminal_move_keybind_second = conf.val("terminal_move_keybind_second"),
+                call_command = conf.val("call_command"),
+                call_keybind_first = conf.val("call_keybind_first"),
+                call_keybind_second = conf.val("call_keybind_second"),
+                call_number = conf.val("call_number"),
+                call_ring_filename = conf.val("call_ring_filename"),
+                call_busy_filename = conf.val("call_busy_filename")
             }, "config", source)
             client_sender.pass_data(state_get("calls"), "calls", source)
             client_sender.pass_data(state_get("units"), "units", source)
@@ -52,6 +58,8 @@ function client_receiver.client_event_handlers()
             client_sender.pass_data(state_get("vehicle_markers"), "vehicle_markers", source)
             client_sender.pass_data(state_get("vehicle_models"), "vehicle_models", source)
             client_sender.pass_data(state_get("charges"), "charges", source)
+            client_sender.pass_data(state_get("locations"), "locations", source)
+            client_sender.pass_data(state_get("call_grades"), "call_grades", source)
             client_sender.pass_data(user_helpers.get_steam_id(source), "steam_id", source)
         end
     )
@@ -112,6 +120,20 @@ function client_receiver.client_event_handlers()
         end
     )
 
+    -- Open the call
+    RegisterNetEvent("open_call")
+    AddEventHandler(
+        "open_call",
+        function()
+            print_debug("RECEIVED REQUEST FROM CLIENT TO OPEN CALL FOR USER " .. source)
+            if (hasCitizen(source)) then
+                client_sender.pass_data(nil, "open_call", source)
+            else
+                client_sender.pass_data("Only a citizen can do this", "send_chat", source)
+            end
+        end
+    )
+
     -- Start panic
     RegisterNetEvent("start_panic")
     AddEventHandler(
@@ -143,6 +165,20 @@ function client_receiver.client_event_handlers()
         function(data)
             print_debug("RECEIVED REQUEST FROM CLIENT TO SEND CITIZEN SEARCH")
             citizens.search_citizens(data, client_sender.pass_data, source)
+        end
+    )
+
+    -- Perform citizen call creation
+    RegisterNetEvent("citizen_call")
+    AddEventHandler(
+        "citizen_call",
+        function(data)
+            print_debug("RECEIVED REQUEST FROM CLIENT TO SEND CITIZEN CALL")
+            if (hasCitizen(source)) then
+                citizens.send_call(data, client_sender.pass_data, source)
+            else
+                client_sender.pass_data("Only a citizen can do this", "send_chat", source)
+            end
         end
     )
 
