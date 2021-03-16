@@ -46,6 +46,9 @@ SetHttpHandler(
                             elseif (data.object == "unit_states") then
                                 -- Repopulate all unit states
                                 units.repopulate_unit_states()
+                            elseif (data.object == "unit_types") then
+                                -- Repopulate all unit types
+                                units.repopulate_unit_types()
                             elseif (data.object == "user_ranks") then
                                 -- Repopulate all user ranks
                                 users.repopulate_user_ranks()

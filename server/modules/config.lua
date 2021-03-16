@@ -102,6 +102,10 @@ function config.sanity_check()
             print("****** CADVANCED: Missing call_busy_filename value in config ******")
             return false
         end
+        if conf.self_dispatch == nil then
+            print("****** CADVANCED: Missing self_dispatch value in config ******")
+            return false
+        end
         return true
     else
         print(

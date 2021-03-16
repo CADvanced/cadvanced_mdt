@@ -50,6 +50,29 @@ function units.get_all_unit_states(pass_to_client)
     )
 end
 
+-- Get the table of all unit types
+function units.get_all_unit_types(pass_to_client)
+    local q_all_unit_types = queries.get_all_unit_types()
+    api.request(
+        q_all_unit_types,
+        function(response)
+            response = json.decode(response)
+            if response.error == nil then
+                local ut = {}
+                for _, uType in ipairs(response.data.allUnitTypes) do
+                    table.insert(ut, uType)
+                end
+                state_set("unit_types", ut)
+                if (pass_to_client ~= nil and pass_to_client) then
+                    client_sender.pass_data(state.unit_types, "unit_types")
+                end
+            else
+                print_debug(response.error)
+            end
+        end
+    )
+end
+
 -- Get the table of all user / unit assignments
 function units.get_all_user_units(pass_to_client)
     local q_all_user_units = queries.get_all_user_units()
@@ -73,6 +96,39 @@ function units.get_all_user_units(pass_to_client)
     )
 end
 
+-- Send a unit
+function units.send_unit(data)
+    local q_send_unit
+    if (data.id) then
+        q_send_unit = queries.update_unit(data)
+    else
+        q_send_unit = queries.create_unit(data)
+    end
+    api.request(
+        q_send_unit,
+        function(response)
+            response = json.decode(response)
+            if response.error ~= nil then
+                print_debug(response.error)
+            end
+        end
+    )
+end
+
+-- Delete a unit
+function units.delete_unit(data)
+    local q_delete_unit = queries.delete_unit(data)
+    api.request(
+        q_delete_unit,
+        function(response)
+            response = json.decode(response)
+            if response.error ~= nil then
+                print_debug(response.error)
+            end
+        end
+    )
+end
+
 -- Repopulate all user_units
 function units.repopulate_user_units()
     units.get_all_user_units(true)
@@ -86,6 +142,11 @@ end
 -- Repopulate all unit states
 function units.repopulate_unit_states()
     units.get_all_unit_states(true)
+end
+
+-- Repopulate all unit types
+function units.repopulate_unit_types()
+    units.get_all_unit_types(true)
 end
 
 -- Update a unit

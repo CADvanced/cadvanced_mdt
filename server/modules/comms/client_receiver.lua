@@ -5,6 +5,7 @@ local users = module("server/modules/users")
 local units = module("server/modules/units")
 local vehicles = module("server/modules/vehicles")
 local legal = module("server/modules/legal")
+local calls = module("server/modules/calls")
 local client_sender = module("server/modules/comms/client_sender")
 
 local client_receiver = {}
@@ -47,11 +48,13 @@ function client_receiver.client_event_handlers()
                 call_keybind_second = conf.val("call_keybind_second"),
                 call_number = conf.val("call_number"),
                 call_ring_filename = conf.val("call_ring_filename"),
-                call_busy_filename = conf.val("call_busy_filename")
+                call_busy_filename = conf.val("call_busy_filename"),
+                self_dispatch = conf.val("self_dispatch")
             }, "config", source)
             client_sender.pass_data(state_get("calls"), "calls", source)
             client_sender.pass_data(state_get("units"), "units", source)
             client_sender.pass_data(state_get("unit_states"), "unit_states", source)
+            client_sender.pass_data(state_get("unit_types"), "unit_types", source)
             client_sender.pass_data(state_get("user_units"), "user_units", source)
             client_sender.pass_data(state_get("user_ranks"), "user_ranks", source)
             client_sender.pass_data(state_get("citizen_markers"), "citizen_markers", source)
@@ -60,6 +63,8 @@ function client_receiver.client_event_handlers()
             client_sender.pass_data(state_get("charges"), "charges", source)
             client_sender.pass_data(state_get("locations"), "locations", source)
             client_sender.pass_data(state_get("call_grades"), "call_grades", source)
+            client_sender.pass_data(state_get("call_types"), "call_types", source)
+            client_sender.pass_data(state_get("call_incidents"), "call_incidents", source)
             client_sender.pass_data(user_helpers.get_steam_id(source), "steam_id", source)
         end
     )
@@ -270,6 +275,46 @@ function client_receiver.client_event_handlers()
         end
     )
 
+    -- Send a call
+    RegisterNetEvent("send_call")
+    AddEventHandler(
+        "send_call",
+        function(data)
+            print_debug("RECEIVED REQUEST FROM CLIENT TO SEND CALL")
+            calls.send_call(data)
+        end
+    )
+
+    -- Delete a call
+    RegisterNetEvent("delete_call")
+    AddEventHandler(
+        "delete_call",
+        function(data)
+            print_debug("RECEIVED REQUEST FROM CLIENT TO DELETE CALL")
+            calls.delete_call(data)
+        end
+    )
+
+    -- Send a unit
+    RegisterNetEvent("send_unit")
+    AddEventHandler(
+        "send_unit",
+        function(data)
+            print_debug("RECEIVED REQUEST FROM CLIENT TO SEND UNIT")
+            units.send_unit(data)
+        end
+    )
+
+    -- Delete a unit
+    RegisterNetEvent("delete_unit")
+    AddEventHandler(
+        "delete_unit",
+        function(data)
+            print_debug("RECEIVED REQUEST FROM CLIENT TO DELETE UNIT")
+            units.delete_unit(data)
+        end
+    )
+
     -- Save a ticket
     RegisterNetEvent("save_ticket")
     AddEventHandler(
@@ -299,6 +344,16 @@ function client_receiver.client_event_handlers()
             legal.delete_offence(data)
         end
     )
+    -- Delete a call
+    RegisterNetEvent("toggle_assignment")
+    AddEventHandler(
+        "toggle_assignment",
+        function(data)
+            print_debug("RECEIVED REQUEST FROM CLIENT TO TOGGLE UNIT ASSIGNMENT")
+            calls.toggle_assignment(data)
+        end
+    )
+
 
 end
 

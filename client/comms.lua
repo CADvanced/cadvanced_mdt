@@ -221,6 +221,15 @@ AddEventHandler(
     end
 )
 
+RegisterNetEvent("data:unit_types")
+AddEventHandler(
+    "data:unit_types",
+    function(jsonData)
+        print_debug("RECEIVED UNIT TYPES FROM SERVER")
+        pass_to_nui(jsonData, "unit_types")
+    end
+)
+
 RegisterNetEvent("data:citizen_markers")
 AddEventHandler(
     "data:citizen_markers",
@@ -354,6 +363,24 @@ AddEventHandler(
     function(jsonData)
         print_debug("RECEIVED CALL GRADES FROM SERVER")
         pass_to_nui(jsonData, "call_grades")
+    end
+)
+
+RegisterNetEvent("data:call_types")
+AddEventHandler(
+    "data:call_types",
+    function(jsonData)
+        print_debug("RECEIVED CALL TYPES FROM SERVER")
+        pass_to_nui(jsonData, "call_types")
+    end
+)
+
+RegisterNetEvent("data:call_incidents")
+AddEventHandler(
+    "data:call_incidents",
+    function(jsonData)
+        print_debug("RECEIVED CALL INCIDENTS FROM SERVER")
+        pass_to_nui(jsonData, "call_incidents")
     end
 )
 

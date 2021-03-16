@@ -31,6 +31,9 @@ function init.bootstrapData()
     -- Get all unit states
     units.get_all_unit_states()
 
+    -- Get all unit types
+    units.get_all_unit_types()
+
     -- Get all user / unit assignments
     units.get_all_user_units()
 
@@ -51,6 +54,12 @@ function init.bootstrapData()
 
     -- Get all call grades
     calls.get_all_call_grades()
+
+    -- Get all call grades
+    calls.get_all_call_types()
+
+    -- Get all call incidents
+    calls.get_all_call_incidents()
 
     -- Get all locations
     locations.get_all_locations()

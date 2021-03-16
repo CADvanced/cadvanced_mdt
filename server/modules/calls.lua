@@ -88,4 +88,97 @@ function calls.get_all_call_grades(pass_to_client)
     )
 end
 
+-- Get the table of all call types
+function calls.get_all_call_types(pass_to_client)
+    local q_get_all_call_types = queries.get_all_call_types()
+    api.request(
+        q_get_all_call_types,
+        function(response)
+            response = json.decode(response)
+            if response.error == nil then
+                local call_types = {}
+                for _, call_type in ipairs(response.data.allCallTypes) do
+                    table.insert(call_types, call_type)
+                end
+                state_set("call_types", call_types)
+                if (pass_to_client ~= nil and pass_to_client) then
+                    client_sender.pass_data(state.call_types, "call_types")
+                end
+            else
+                print_debug(response.error)
+            end
+        end
+    )
+end
+
+-- Get the table of all call incidents
+function calls.get_all_call_incidents(pass_to_client)
+    local q_get_all_call_incidents = queries.get_all_call_incidents()
+    api.request(
+        q_get_all_call_incidents,
+        function(response)
+            response = json.decode(response)
+            if response.error == nil then
+                local call_incidents = {}
+                for _, call_incident in ipairs(response.data.allIncidentTypes) do
+                    table.insert(call_incidents, call_incident)
+                end
+                state_set("call_incidents", call_incidents)
+                if (pass_to_client ~= nil and pass_to_client) then
+                    client_sender.pass_data(state.call_incidents, "call_incidents")
+                end
+            else
+                print_debug(response.error)
+            end
+        end
+    )
+end
+
+-- Send a call
+function calls.send_call(data)
+    local q_send_call
+    if (data.id) then
+        q_send_call = queries.update_call(data)
+    else
+        q_send_call = queries.create_call(data)
+    end
+    api.request(
+        q_send_call,
+        function(response)
+            response = json.decode(response)
+            if response.error ~= nil then
+                print_debug(response.error)
+            end
+        end
+    )
+end
+
+-- Delete a call
+function calls.delete_call(data)
+    local q_delete_call = queries.delete_call(data)
+    api.request(
+        q_delete_call,
+        function(response)
+            response = json.decode(response)
+            if response.error ~= nil then
+                print_debug(response.error)
+            end
+        end
+    )
+end
+
+-- Toggle a unit assignment
+function calls.toggle_assignment(data)
+    local q_toggle_assignment = queries.toggle_assignment(data)
+    api.request(
+        q_toggle_assignment,
+        function(response)
+            response = json.decode(response)
+            if response.error ~= nil then
+                print_debug(response.error)
+            end
+        end
+    )
+end
+
 return calls

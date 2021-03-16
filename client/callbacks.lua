@@ -240,6 +240,62 @@ RegisterNUICallback(
     end
 )
 
+-- Callback to handle saving of a call
+RegisterNUICallback(
+    "sendCall",
+    function(data, cb)
+        -- Tell the server to send the call
+        print_debug("RECEIVED REQUEST FROM NUI TO SAVE CALL")
+        print_debug("SENDING CALL SAVE REQUEST TO SERVER")
+        TriggerServerEvent("send_call", data)
+        if cb then
+            cb()
+        end
+    end
+)
+
+-- Callback to handle deleting of a call
+RegisterNUICallback(
+    "deleteCall",
+    function(data, cb)
+        -- Tell the server to delete the call
+        print_debug("RECEIVED REQUEST FROM NUI TO DELETE CALL")
+        print_debug("SENDING CALL DELETE REQUEST TO SERVER")
+        TriggerServerEvent("delete_call", data)
+        if cb then
+            cb()
+        end
+    end
+)
+
+-- Callback to handle saving of a unit
+RegisterNUICallback(
+    "sendUnit",
+    function(data, cb)
+        -- Tell the server to send the call
+        print_debug("RECEIVED REQUEST FROM NUI TO SAVE UNIT")
+        print_debug("SENDING UNIT SAVE REQUEST TO SERVER")
+        TriggerServerEvent("send_unit", data)
+        if cb then
+            cb()
+        end
+    end
+)
+
+-- Callback to handle deleting of a call
+RegisterNUICallback(
+    "deleteUnit",
+    function(data, cb)
+        -- Tell the server to delete the call
+        print_debug("RECEIVED REQUEST FROM NUI TO DELETE UNIT")
+        print_debug("SENDING UNIT DELETE REQUEST TO SERVER")
+        TriggerServerEvent("delete_unit", data)
+        if cb then
+            cb()
+        end
+    end
+)
+
 -- Callback to handle saving of a ticket
 RegisterNUICallback(
     "saveTicket",
@@ -287,7 +343,22 @@ RegisterNUICallback(
     function(_, cb)
         -- Tell the server to start the panic
         print_debug("RECEIVED REQUEST FROM NUI TO STOP TERMINAL DRAGGING")
+        print_debug("SENDING STOP TERMINAL DRAGGING REQUEST TO SERVER")
         TriggerServerEvent("terminal_drag_toggle")
+        if cb then
+            cb()
+        end
+    end
+)
+
+-- Callback for toggling a unit assignment
+RegisterNUICallback(
+    "toggleAssignment",
+    function(data, cb)
+        -- Tell the server to toggle the assignment
+        print_debug("RECEIVED REQUEST FROM NUI TO TOGGLE UNIT ASSIGNMENT")
+        print_debug("SENDING TOGGLE UNIT ASSIGNMENT REQUEST TO SERVER")
+        TriggerServerEvent("toggle_assignment", data)
         if cb then
             cb()
         end

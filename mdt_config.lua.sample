@@ -3,11 +3,9 @@ local cfg = {}
 -- ONLY EDIT LINES BETWEEN THE HASHES
 -- ##################################
 
-cfg.cad_url = "https://yourcad.cadvanced.app" -- The full URL of your CAD (WITHOUT THE / AT THE END)
+cfg.cad_url = "https://yourcad.cadvanced.app" -- The full URL of your CAD
 cfg.homepage = "WELCOME TO MY MDT!" -- Text to be displayed on the front page of the MDT
 cfg.api_token = "" -- Your CAD's API token, see Admin > Preferences in the CAD
-                   -- THE TOKEN CAN BE ANYTHING, as long as you enter the same value here
-                   -- and in Admin > Preferences in the CAD
 cfg.enable_whitelist = false -- Only allow players with the "Player" role to join
 cfg.sound_volume = 0.5 -- The volume of MDT sounds
 cfg.debug = false -- Debug mode - do not enable unless requested by support
@@ -32,6 +30,7 @@ cfg.call_keybind_second = "197" -- The second keybind to use to open the termina
 cfg.call_number = "999" -- The number that is dialed when a citizen places a call
 cfg.call_ring_filename = "ringing_uk.ogg" -- Sound file used for ringing tone
 cfg.call_busy_filename = "busy_uk.ogg" -- Sound file used for busy tone
+cfg.self_dispatch = false -- Enable self dispatch in the MDT
 
 -- ##################################
 
