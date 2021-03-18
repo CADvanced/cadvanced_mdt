@@ -31,7 +31,6 @@ cfg.call_number = "999" -- The number that is dialed when a citizen places a cal
 cfg.call_ring_filename = "ringing_uk.ogg" -- Sound file used for ringing tone
 cfg.call_busy_filename = "busy_uk.ogg" -- Sound file used for busy tone
 cfg.self_dispatch = false -- Enable self dispatch in the MDT
-cfg.call_require_citizen = true -- Requires an Active Citizen to call.
 
 -- ##################################
 
