@@ -131,7 +131,7 @@ function client_receiver.client_event_handlers()
         "open_call",
         function()
             print_debug("RECEIVED REQUEST FROM CLIENT TO OPEN CALL FOR USER " .. source)
-            if (hasCitizen(source)) then
+            if (not conf.val('call_require_citizen') or hasCitizen(source)) then
                 client_sender.pass_data(nil, "open_call", source)
             else
                 client_sender.pass_data("Only a citizen can do this", "send_chat", source)
@@ -179,7 +179,7 @@ function client_receiver.client_event_handlers()
         "citizen_call",
         function(data)
             print_debug("RECEIVED REQUEST FROM CLIENT TO SEND CITIZEN CALL")
-            if (hasCitizen(source)) then
+            if (not conf.val('call_require_citizen') or hasCitizen(source)) then
                 citizens.send_call(data, client_sender.pass_data, source)
             else
                 client_sender.pass_data("Only a citizen can do this", "send_chat", source)

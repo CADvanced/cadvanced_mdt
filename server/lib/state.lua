@@ -33,3 +33,5 @@ function state_set(key, val)
     print_debug("UPDATED STATE FOR " .. key)
     return state[key]
 end
+
+exports('state_get', state_get)
