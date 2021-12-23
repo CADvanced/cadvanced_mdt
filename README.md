@@ -32,17 +32,9 @@ After you download the resource, you will need to configure it before uploading 
 
 Rename the file `mdt_config.lua.sample` to `mdt_config.lua`
 
-Edit mdt_config.lua and modify the line:
-
-```
-cfg.cad_url = "https://<your_cadvanced_url_here>"
-```
-
-replace `<your_cadvanced_url_here>` with the full URL of your CADvanced server, for example: `mycadvanced.cadvanced.app`
-
 ---
 
-## Additional options:
+## Configuration options:
 
 ---
 
@@ -51,14 +43,6 @@ cfg.homepage = "WELCOME TO MY MDT!"
 ```
 
 The text that will be displayed on the front page of your MDT
-
----
-
-```
-cfg.api_token = ""
-```
-
-A random string of characters. You also need to enter this value in Admin > Preferences > API token. These values must match but can be anything you want.
 
 ---
 
