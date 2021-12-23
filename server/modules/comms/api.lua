@@ -2,7 +2,7 @@ local api = {}
 
 function api.request(query, callback)
     local conf = module("server/modules/config")
-    local token = conf.val("api_token")
+    local token = conf.val("cad_key")
     local url = conf.val("cad_url") .. "/api"
     print_debug("MAKING API CALL TO " .. url)
     print_debug("CALL BODY: " .. query)

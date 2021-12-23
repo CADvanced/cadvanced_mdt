@@ -65,7 +65,7 @@ function users.validate(source, setKickReason)
             "Unable to find SteamID, please relaunch FiveM with steam open or restart FiveM & Steam if steam is already open"
         )
         CancelEvent()
-        print_debug("PLAYER JOIN DENIED - NO SOURCE")
+        print("****** CADVANCED: PLAYER JOIN DENIED - NO SOURCE - PROBABLY NOT LOGGED INTO STEAM")
         return false
     end
     local id = user_helpers.get_steam_id(source)
@@ -74,13 +74,13 @@ function users.validate(source, setKickReason)
             "Unable to find SteamID, please relaunch FiveM with steam open or restart FiveM & Steam if steam is already open"
         )
         CancelEvent()
-        print_debug("PLAYER JOIN DENIED - NO STEAM ID")
+        print("****** CADVANCED: PLAYER JOIN DENIED - NO STEAM ID")
         return false
     end
     if conf.val("enable_whitelist") and not hasValue(state_get("whitelist"), id) then
         setKickReason("You are not whitelisted for this server")
         CancelEvent()
-        print_debug("PLAYER JOIN DENIED - NOT WHITELISTED")
+        print("****** CADVANCED: PLAYER JOIN DENIED - NOT WHITELISTED")
         return false
     end
     print_debug("PLAYER JOIN ACCEPTED")

@@ -10,14 +10,6 @@ end
 -- Check the loaded config for sanity
 function config.sanity_check()
     if conf then
-        if conf.cad_url == nil or conf.cad_url == "https://yourcad.cadvanced.app" then
-            print("****** CADVANCED: Invalid or missing cad_url value in config ******")
-            return false
-        end
-        if conf.api_token == nil or conf.api_token == "" then
-            print("****** CADVANCED: Invalid or missing api_token value in config ******")
-            return false
-        end
         if conf.homepage == nil then
             print("****** CADVANCED: Missing 'homepage' entry in config ******")
             return false
@@ -113,6 +105,51 @@ function config.sanity_check()
         )
         return false
     end
+end
+
+function config.get_cad_config()
+    local retval = getResourcePath()
+    local cad_conf = io.open(retval .. "/cad.conf", "r")
+    local success = false
+    local content = ""
+    if cad_conf then
+        local count = 0
+        for line in cad_conf:lines() do
+            if count == 1 then
+                content = line
+            end
+            count = count + 1
+        end
+        cad_conf:close()
+        local url_key = content:split("|")
+        local cad_url = url_key[1]
+        local cad_key = url_key[2]
+        if (cad_url ~= nil and cad_url  ~= "" and cad_key ~= nil and cad_key ~= "") then
+            conf.cad_url = url_key[1]
+            conf.cad_key = url_key[2]
+            return true
+        end
+    end
+    print(
+        "****** CADVANCED: UNABLE TO LOAD CAD CONFIG. Please complete details of your FiveM server in Admin > Preferences of your CAD ******"
+    )
+
+    -- Attempt to fall back to using values in the config, so we don't break
+    -- existing users who have updated their MDT, but not initialised the MDT
+    -- from the CAD
+    if 
+        conf.cad_url ~= nil and
+        conf.cad_url ~= "https://yourcad.cadvanced.app" and
+        conf.api_token ~= ""
+    then
+        -- Don't bother updating conf.cad_url because it's come from the config
+        -- and is already populated
+        print ("****** CADVANCED: FALLING BACK TO MAIN CONFIG VALUES")
+        conf.cad_key = conf.api_token
+        return true
+    end
+
+    return false
 end
 
 return config

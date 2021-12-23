@@ -18,6 +18,12 @@ function init.bootstrapData()
     if not sane then
         return
     end
+    
+    -- Sanity check and get CAD config
+    local cad_config_sane = conf.get_cad_config()
+    if not cad_config_sane then
+        return
+    end
 
     -- Get the whitelisted players, if appropriate
     users.get_whitelisted()

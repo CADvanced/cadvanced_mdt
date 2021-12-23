@@ -3,6 +3,7 @@ local units = module("server/modules/units")
 local calls = module("server/modules/calls")
 local vehicles = module("server/modules/vehicles")
 local citizens = module("server/modules/citizens")
+local cad_config = module("server/modules/cad_config")
 
 SetHttpHandler(
     function(req, res)
@@ -11,7 +12,7 @@ SetHttpHandler(
             if req.path == "/update" then
                 req.setDataHandler(
                     function(body)
-                        print_debug("PUT ROUTER RECEIVED " .. body)
+                        print_debug("POST ROUTER RECEIVED " .. body)
                         local data = json.decode(body)
                         if next(data) ~= nil then
                             print_debug("HANDLING UPDATED " .. data.object)
@@ -61,6 +62,9 @@ SetHttpHandler(
                             elseif (data.object == "panic") then
                                 -- We've got a panic
                                 users.display_panic(data.payload.callId)
+                            elseif (data.object == "cad_config") then
+                                -- We've received an updated config
+                                cad_config.receive_update(data.payload)
                             end
                         end
                         res.send(json.encode({
