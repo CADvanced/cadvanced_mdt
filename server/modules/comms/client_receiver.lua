@@ -6,6 +6,7 @@ local units = module("server/modules/units")
 local vehicles = module("server/modules/vehicles")
 local legal = module("server/modules/legal")
 local calls = module("server/modules/calls")
+local bolos = module("server/modules/bolos")
 local client_sender = module("server/modules/comms/client_sender")
 
 local client_receiver = {}
@@ -62,9 +63,11 @@ function client_receiver.client_event_handlers()
             client_sender.pass_data(state_get("vehicle_models"), "vehicle_models", source)
             client_sender.pass_data(state_get("charges"), "charges", source)
             client_sender.pass_data(state_get("locations"), "locations", source)
+            client_sender.pass_data(state_get("bolos"), "bolos", source)
             client_sender.pass_data(state_get("call_grades"), "call_grades", source)
             client_sender.pass_data(state_get("call_types"), "call_types", source)
             client_sender.pass_data(state_get("call_incidents"), "call_incidents", source)
+            client_sender.pass_data(state_get("preference_enable_bolo"), "preference_enable_bolo", source)
             client_sender.pass_data(user_helpers.get_steam_id(source), "steam_id", source)
         end
     )
@@ -285,6 +288,16 @@ function client_receiver.client_event_handlers()
         end
     )
 
+    -- Send a BOLO
+    RegisterNetEvent("send_bolo")
+    AddEventHandler(
+        "send_bolo",
+        function(data)
+            print_debug("RECEIVED REQUEST FROM CLIENT TO SEND BOLO")
+            bolos.send_bolo(data)
+        end
+    )
+
     -- Delete a call
     RegisterNetEvent("delete_call")
     AddEventHandler(
@@ -292,6 +305,16 @@ function client_receiver.client_event_handlers()
         function(data)
             print_debug("RECEIVED REQUEST FROM CLIENT TO DELETE CALL")
             calls.delete_call(data)
+        end
+    )
+
+    -- Delete a BOLO
+    RegisterNetEvent("delete_bolo")
+    AddEventHandler(
+        "delete_bolo",
+        function(data)
+            print_debug("RECEIVED REQUEST FROM CLIENT TO DELETE BOLO")
+            bolos.delete_bolo(data)
         end
     )
 

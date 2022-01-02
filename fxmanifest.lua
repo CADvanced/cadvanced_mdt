@@ -13,6 +13,7 @@ files {
     "ui/build/bundle.js",
     "ui/build/css/reset.css",
     "ui/build/css/main.css",
+    "ui/build/sounds/bolo.ogg",
     "ui/build/sounds/roger.ogg",
     "ui/build/sounds/panic.ogg",
     "ui/build/sounds/dtmf/1.ogg",

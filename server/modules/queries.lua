@@ -42,6 +42,25 @@ function queries.get_all_calls()
     return json.encode(query)
 end
 
+function queries.get_preference(key)
+    local query = {
+        operationName = null,
+        query = _doSub(
+            '{getPreference(key: "$x") {key value}}',
+            {x = key}
+        )
+    }
+    return json.encode(query)
+end
+
+function queries.get_all_bolos()
+    local query = {
+        operationName = null,
+        query = "{ allBolos { id boloType details { description knownName weapons lastLocation reason licencePlate driverDescription occupants } updatedAt } }"
+    }
+    return json.encode(query)
+end
+
 function queries.get_all_units()
     local query = {
         operationName = null,
@@ -83,6 +102,17 @@ function queries.get_call(call_id)
         query = _doSub(
             "{ getCall(id: $x) { id callerInfo markerX markerY callGrade { id name } callType { id name } callLocations { id name } callIncidents { id name } callDescriptions { id text } assignedUnits { id } } }",
             {x = call_id}
+        )
+    }
+    return json.encode(query)
+end
+
+function queries.get_bolo(bolo_id)
+    local query = {
+        operationname = null,
+        query = _doSub(
+            "{getBolo(id:$x){id boloType details{description knownName weapons lastLocation reason licencePlate driverDescription occupants}updatedAt}}",
+            {x = bolo_id}
         )
     }
     return json.encode(query)
@@ -476,6 +506,32 @@ function queries.update_call(props)
     return json.encode(query)
 end
 
+function queries.create_bolo(props)
+    local query = {
+        operationName = null,
+        variables = {
+            id = props.id,
+            boloType = props.boloType,
+            details = props.details
+        },
+        query = "mutation createBolo($boloType: String! $details: BoloDetailsInput!) {createBolo(boloType: $boloType details: $details) {id boloType details { description licencePlate driverDescription occupants lastLocation reason } } }"
+    }
+    return json.encode(query)
+end
+
+function queries.update_bolo(props)
+    local query = {
+        operationName = null,
+        variables = {
+            id = props.id,
+            boloType = props.boloType,
+            details = props.details
+        },
+        query = "mutation ($id: ID! $boloType: String! $details: BoloDetailsInput!){updateBolo(id: $id boloType: $boloType details: $details){id boloType details{licencePlate driverDescription occupants lastLocation reason}}}"
+    }
+    return json.encode(query)
+end
+
 function queries.delete_call(props)
     local query = {
         operationName = null,
@@ -483,6 +539,17 @@ function queries.delete_call(props)
             callId = props.id
         },
         query = "mutation ($callId: ID!) { deleteCall(id: $callId)}"
+    }
+    return json.encode(query)
+end
+
+function queries.delete_bolo(props)
+    local query = {
+        operationName = null,
+        variables = {
+            boloId = props.id
+        },
+        query = "mutation ($boloId: ID!) { deleteBolo(id: $boloId)}"
     }
     return json.encode(query)
 end

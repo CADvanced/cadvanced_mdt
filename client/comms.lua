@@ -357,6 +357,24 @@ AddEventHandler(
     end
 )
 
+RegisterNetEvent("data:bolos")
+AddEventHandler(
+    "data:bolos",
+    function(jsonData)
+        print_debug("RECEIVED BOLOS FROM SERVER")
+        pass_to_nui(jsonData, "bolos")
+    end
+)
+
+RegisterNetEvent("data:preference_enable_bolo")
+AddEventHandler(
+    "data:preference_enable_bolo",
+    function(jsonData)
+        print_debug("RECEIVED ENABLE_BOLO PREFERENCE FROM SERVER")
+        pass_to_nui(jsonData, "preference_enable_bolo")
+    end
+)
+
 RegisterNetEvent("data:call_grades")
 AddEventHandler(
     "data:call_grades",

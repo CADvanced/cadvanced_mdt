@@ -254,6 +254,20 @@ RegisterNUICallback(
     end
 )
 
+-- Callback to handle saving of a BOLO
+RegisterNUICallback(
+    "sendBolo",
+    function(data, cb)
+        -- Tell the server to send the call
+        print_debug("RECEIVED REQUEST FROM NUI TO SAVE BOLO")
+        print_debug("SENDING BOLO SAVE REQUEST TO SERVER")
+        TriggerServerEvent("send_bolo", data)
+        if cb then
+            cb()
+        end
+    end
+)
+
 -- Callback to handle deleting of a call
 RegisterNUICallback(
     "deleteCall",
@@ -262,6 +276,19 @@ RegisterNUICallback(
         print_debug("RECEIVED REQUEST FROM NUI TO DELETE CALL")
         print_debug("SENDING CALL DELETE REQUEST TO SERVER")
         TriggerServerEvent("delete_call", data)
+        if cb then
+            cb()
+        end
+    end
+)
+
+RegisterNUICallback(
+    "deleteBolo",
+    function(data, cb)
+        -- Tell the server to delete the call
+        print_debug("RECEIVED REQUEST FROM NUI TO DELETE BOLO")
+        print_debug("SENDING BOLO DELETE REQUEST TO SERVER")
+        TriggerServerEvent("delete_bolo", data)
         if cb then
             cb()
         end

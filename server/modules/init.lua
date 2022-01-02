@@ -1,12 +1,14 @@
 local conf = module("server/modules/config")
 local users = module("server/modules/users")
 local calls = module("server/modules/calls")
+local bolos = module("server/modules/bolos")
 local units = module("server/modules/units")
 local citizens = module("server/modules/citizens")
 local vehicles = module("server/modules/vehicles")
 local legal = module("server/modules/legal")
 local locations = module("server/modules/locations")
 local calls = module("server/modules/calls")
+local preferences = module("server/modules/preferences")
 local client_receiver = module("server/modules/comms/client_receiver")
 
 local init = {}
@@ -30,6 +32,9 @@ function init.bootstrapData()
 
     -- Get all calls
     calls.get_all_calls()
+
+    -- Get all BOLOs
+    bolos.get_all_bolos()
 
     -- Get all units
     units.get_all_units()
@@ -69,6 +74,9 @@ function init.bootstrapData()
 
     -- Get all locations
     locations.get_all_locations()
+
+    -- Find out if BOLOs are enabled
+    preferences.get_preference("enable_bolo")
 end
 
 function init.createEventHandlers()

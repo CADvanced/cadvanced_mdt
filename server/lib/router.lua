@@ -1,8 +1,10 @@
 local users = module("server/modules/users")
 local units = module("server/modules/units")
 local calls = module("server/modules/calls")
+local bolos = module("server/modules/bolos")
 local vehicles = module("server/modules/vehicles")
 local citizens = module("server/modules/citizens")
+local preferences = module("server/modules/preferences")
 local cad_config = module("server/modules/cad_config")
 
 SetHttpHandler(
@@ -32,6 +34,12 @@ SetHttpHandler(
                             elseif (data.object == "calls") then
                                 -- Update all calls
                                 calls.repopulate_calls()
+                            elseif (data.object == "preference") then
+                                -- Update preference
+                                local key = data.payload.key;
+                                if (key == "enable_bolo") then
+                                    preferences.repopulate_preference(data.payload.key)
+                                end
                             elseif (data.object == "user_units") then
                                 -- Repopulate all user / unit assignments
                                 units.repopulate_user_units()
@@ -56,6 +64,9 @@ SetHttpHandler(
                             elseif (data.object == "units") then
                                 -- Repopulate all units
                                 units.repopulate_units()
+                            elseif (data.object == "bolos") then
+                                -- Repopulate all BOLOs
+                                bolos.repopulate_bolos()
                             elseif (data.object == "whitelist") then
                                 -- Repopulate the whitelist
                                 users.get_whitelisted()
