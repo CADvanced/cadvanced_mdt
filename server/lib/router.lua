@@ -16,6 +16,7 @@ SetHttpHandler(
                     function(body)
                         print_debug("POST ROUTER RECEIVED " .. body)
                         local data = json.decode(body)
+                        local response = "OK"
                         if next(data) ~= nil then
                             print_debug("HANDLING UPDATED " .. data.object)
                             if (data.object == "user") then
@@ -75,11 +76,14 @@ SetHttpHandler(
                                 users.display_panic(data.payload.callId)
                             elseif (data.object == "cad_config") then
                                 -- We've received an updated config
-                                cad_config.receive_update(data.payload)
+                                local updated = cad_config.receive_update(data.payload)
+                                if (not updated) then
+                                    response = "FAIL"
+                                end
                             end
                         end
                         res.send(json.encode({
-                            result = "OK",
+                            result = response,
                             cadvanced_mdt_version = GetResourceMetadata('cadvanced_mdt', 'version', 0)
                         }))
                     end
