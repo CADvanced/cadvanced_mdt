@@ -8,6 +8,7 @@ local vehicles = module("server/modules/vehicles")
 local legal = module("server/modules/legal")
 local locations = module("server/modules/locations")
 local calls = module("server/modules/calls")
+local departments = module("server/modules/departments")
 local preferences = module("server/modules/preferences")
 local client_receiver = module("server/modules/comms/client_receiver")
 
@@ -75,8 +76,11 @@ function init.bootstrapData()
     -- Get all locations
     locations.get_all_locations()
 
-    -- Find out if BOLOs are enabled
-    preferences.get_preference("enable_bolo")
+    -- Get all departments
+    departments.get_all_departments()
+
+    -- Get all department announcements
+    departments.get_department_announcements()
 end
 
 function init.createEventHandlers()

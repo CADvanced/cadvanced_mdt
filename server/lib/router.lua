@@ -4,6 +4,7 @@ local calls = module("server/modules/calls")
 local bolos = module("server/modules/bolos")
 local vehicles = module("server/modules/vehicles")
 local citizens = module("server/modules/citizens")
+local departments = module("server/modules/departments")
 local preferences = module("server/modules/preferences")
 local cad_config = module("server/modules/cad_config")
 
@@ -68,6 +69,12 @@ SetHttpHandler(
                             elseif (data.object == "bolos") then
                                 -- Repopulate all BOLOs
                                 bolos.repopulate_bolos()
+                            elseif (data.object == "departments") then
+                                -- Update all departments
+                                departments.repopulate_departments()
+                            elseif (data.object == "department_announcements") then
+                                -- Update all department announcements
+                                departments.repopulate_department_announcements()
                             elseif (data.object == "whitelist") then
                                 -- Repopulate the whitelist
                                 users.get_whitelisted()

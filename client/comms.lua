@@ -366,12 +366,21 @@ AddEventHandler(
     end
 )
 
-RegisterNetEvent("data:preference_enable_bolo")
+RegisterNetEvent("data:departments")
 AddEventHandler(
-    "data:preference_enable_bolo",
+    "data:departments",
     function(jsonData)
-        print_debug("RECEIVED ENABLE_BOLO PREFERENCE FROM SERVER")
-        pass_to_nui(jsonData, "preference_enable_bolo")
+        print_debug("RECEIVED DEPARTMENTS FROM SERVER")
+        pass_to_nui(jsonData, "departments")
+    end
+)
+
+RegisterNetEvent("data:department_announcements")
+AddEventHandler(
+    "data:department_announcements",
+    function(jsonData)
+        print_debug("RECEIVED DEPARTMENT ANNOUNCEMENTS FROM SERVER")
+        pass_to_nui(jsonData, "department_announcements")
     end
 )
 

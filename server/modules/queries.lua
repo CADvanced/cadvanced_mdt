@@ -16,7 +16,7 @@ function queries.get_user(steam_id)
     local query = {
         operationName = null,
         query = _doSub(
-            '{ getUser(steamId: "$x") { id userName steamId avatarUrl x y roles { id name code } character { ... on Citizen { id firstName lastName active __typename } ... on Officer { id firstName lastName active __typename } } } }',
+            '{ getUser(steamId: "$x") { id userName steamId avatarUrl x y roles { id name code } character { ... on Citizen { id firstName lastName active __typename } ... on Officer { id firstName lastName active department { id colour logo name bolo } __typename } } } }',
             {x = steam_id}
         )
     }
@@ -29,7 +29,7 @@ function queries.start_panic(steam_id)
         variables = {
             steamId = steam_id
         },
-        query = 'mutation ($steamId: String!) { startPanic(steamId: $steamId) { id callerInfo markerX markerY callType { id name code readonly } callGrade { id name code readonly } callLocations { id name code readonly } callIncidents { id name code readonly } callDescriptions { id text } } }'
+        query = 'mutation ($steamId: String!) { startPanic(steamId: $steamId) { id callerInfo markerX markerY DepartmentId callType { id name code readonly DepartmentId } callGrade { id name code readonly DepartmentId } callLocations { id name code readonly } callIncidents { id name code readonly DepartmentId } callDescriptions { id text } } }'
     }
     return json.encode(query)
 end
@@ -37,7 +37,7 @@ end
 function queries.get_all_calls()
     local query = {
         operationName = null,
-        query = "{ allCalls { id callerInfo markerX markerY callGrade { id name } callType { id name } callLocations { id name } callIncidents { id name } callDescriptions { id text } assignedUnits { id } } }"
+        query = "{ allCalls { id callerInfo markerX markerY DepartmentId callGrade { id name code readonly DepartmentId } callType { id name code readonly DepartmentId } callLocations { id name } callIncidents { id name code readonly DepartmentId } callDescriptions { id text } assignedUnits { id } } }"
     }
     return json.encode(query)
 end
@@ -56,7 +56,23 @@ end
 function queries.get_all_bolos()
     local query = {
         operationName = null,
-        query = "{ allBolos { id boloType details { description knownName weapons lastLocation reason licencePlate driverDescription occupants } updatedAt } }"
+        query = "{ allBolos { id boloType DepartmentId details { description knownName weapons lastLocation reason licencePlate driverDescription occupants } updatedAt } }"
+    }
+    return json.encode(query)
+end
+
+function queries.get_all_departments()
+    local query = {
+        operationName = null,
+        query = '{allDepartments{id name colour logo readonly bolo}}'
+    }
+    return json.encode(query)
+end
+
+function queries.get_department_announcements()
+    local query = {
+        operationName = null,
+        query = 'query allDepartmentAnnouncements($id: ID) { allDepartmentAnnouncements(id: $id) { id text DepartmentId createdAt updatedAt } }'
     }
     return json.encode(query)
 end
@@ -64,7 +80,7 @@ end
 function queries.get_all_units()
     local query = {
         operationName = null,
-        query = "{ allUnits { id callSign unitType { id name } unitState { id name colour code active } UnitTypeId UnitStateId } }"
+        query = "{ allUnits { id callSign DepartmentId unitType { id name DepartmentId } unitState { id name colour code active DepartmentId } UnitTypeId UnitStateId } }"
     }
     return json.encode(query)
 end
@@ -80,7 +96,7 @@ end
 function queries.get_all_user_ranks()
     local query = {
         operationName = null,
-        query = "{ allUserRanks { id name position } } "
+        query = "{ allUserRanks { id name position DepartmentId } } "
     }
     return json.encode(query)
 end
@@ -89,7 +105,7 @@ function queries.get_unit(unit_id)
     local query = {
         operationname = null,
         query = _doSub(
-            "{ getUnit(id: $x) { id callSign unitType { id name } unitState { id name colour code } UnitTypeId UnitStateId } }",
+            "{ getUnit(id: $x) { id callSign DepartmentId unitType { id name DepartmentId } unitState { id name colour code DepartmentId } UnitTypeId UnitStateId } }",
             {x = unit_id}
         )
     }
@@ -100,7 +116,7 @@ function queries.get_call(call_id)
     local query = {
         operationname = null,
         query = _doSub(
-            "{ getCall(id: $x) { id callerInfo markerX markerY callGrade { id name } callType { id name } callLocations { id name } callIncidents { id name } callDescriptions { id text } assignedUnits { id } } }",
+            "{ getCall(id: $x) { id callerInfo markerX markerY DepartmentId callGrade { id name DepartmentId } callType { id name code readonly DepartmentId } callLocations { id name } callIncidents { id name DepartmentId } callDescriptions { id text } assignedUnits { id } } }",
             {x = call_id}
         )
     }
@@ -160,9 +176,10 @@ function queries.send_citizen_call(props)
             steamId = props.steamId,
             location = props.location,
             callerInfo = props.callerInfo,
+            DepartmentId = props.DepartmentId,
             notes = props.notes
         },
-        query = 'mutation ($steamId: String!, $location: String!, $callerInfo: String!, $notes: String!) { createCitizenCall(steamId: $steamId, location: $location, callerInfo: $callerInfo, notes: $notes) { id } }'
+        query = 'mutation ($steamId: String!, $location: String!, $callerInfo: String!, $notes: String!, $DepartmentId: ID!) { createCitizenCall(steamId: $steamId, location: $location, callerInfo: $callerInfo, notes: $notes, DepartmentId: $DepartmentId) { id } }'
     }
     return json.encode(query)
 end
@@ -215,7 +232,7 @@ end
 function queries.get_all_unit_states()
     local query = {
         operationName = null,
-        query = "{ allUnitStates { id name colour } } "
+        query = "{ allUnitStates { id name colour DepartmentId } } "
     }
     return json.encode(query)
 end
@@ -223,7 +240,7 @@ end
 function queries.get_all_unit_types()
     local query = {
         operationName = null,
-        query = "{ allUnitTypes { id name } } "
+        query = "{ allUnitTypes { id name DepartmentId } } "
     }
     return json.encode(query)
 end
@@ -259,9 +276,10 @@ function queries.set_unit_state(props, unit)
             id = props.unitId,
             callSign = unit.callSign,
             UnitStateId = props.stateId,
-            UnitTypeId = unit.UnitTypeId
+            UnitTypeId = unit.UnitTypeId,
+            DepartmentId = unit.DepartmentId
         },
-        query = "mutation ($id: ID!, $callSign: String!, $UnitTypeId: ID!, $UnitStateId: ID!) { updateUnit(id: $id, callSign: $callSign, UnitTypeId: $UnitTypeId, UnitStateId: $UnitStateId) { id callSign unitType { id name } unitState { id name colour code } UnitTypeId UnitStateId } }"
+        query = "mutation ($id: ID!, $callSign: String!, $UnitTypeId: ID!, $UnitStateId: ID!, $DepartmentId: ID!) { updateUnit(id: $id, callSign: $callSign, UnitTypeId: $UnitTypeId, UnitStateId: $UnitStateId, DepartmentId: $DepartmentId) { id callSign unitType { id name DepartmentId } unitState { id name colour code DepartmentId } UnitTypeId UnitStateId DepartmentId } }"
     }
     return json.encode(query)
 end
@@ -448,7 +466,7 @@ end
 function queries.get_all_call_grades()
     local query = {
         operationName = null,
-        query = "{ allCallGrades { id name code } }"
+        query = "{ allCallGrades { id name code DepartmentId } }"
     }
     return json.encode(query)
 end
@@ -456,7 +474,7 @@ end
 function queries.get_all_call_types()
     local query = {
         operationName = null,
-        query = "{ allCallTypes { id name code } }"
+        query = "{ allCallTypes { id name code DepartmentId } }"
     }
     return json.encode(query)
 end
@@ -464,7 +482,7 @@ end
 function queries.get_all_call_incidents()
     local query = {
         operationName = null,
-        query = "{ allIncidentTypes { id name code } }"
+        query = "{ allIncidentTypes { id name code DepartmentId } }"
     }
     return json.encode(query)
 end
@@ -473,6 +491,7 @@ function queries.create_call(props)
     local query = {
         operationName = null,
         variables = {
+            DepartmentId = props.DepartmentId,
             callerInfo = props.callerInfo,
             callGrade = props.callGrade,
             callType = props.callType,
@@ -482,7 +501,7 @@ function queries.create_call(props)
             markerX = 0,
             markerY = 0
         },
-        query = "mutation ($callerInfo: String, $callGrade: CallGradeInput!, $callType: CallTypeInput!, $callIncidents: [IncidentTypeInput]!, $callLocations: [LocationInput!]!, $callDescriptions: [CallDescriptionInput], $markerX: Float, $markerY: Float) { createCall(callerInfo: $callerInfo, callGrade: $callGrade, callType: $callType, callIncidents: $callIncidents, callLocations: $callLocations, callDescriptions: $callDescriptions, markerX: $markerX, markerY: $markerY) { id callerInfo markerX markerY callType { id name code readonly } callGrade { id name code readonly } callLocations { id name code readonly } callIncidents { id name code readonly } callDescriptions { id text } }}"
+        query = "mutation ($callerInfo: String, $callGrade: CallGradeInput!, $callType: CallTypeInput!, $callIncidents: [IncidentTypeInput]!, $callLocations: [LocationInput!]!, $callDescriptions: [CallDescriptionInput], $markerX: Float, $markerY: Float, $DepartmentId: ID!) { createCall(callerInfo: $callerInfo, callGrade: $callGrade, callType: $callType, callIncidents: $callIncidents, callLocations: $callLocations, callDescriptions: $callDescriptions, markerX: $markerX, markerY: $markerY, DepartmentId: $DepartmentId) { id callerInfo markerX markerY DepartmentId callType { id name code readonly DepartmentId } callGrade { id name code readonly DepartmentId } callLocations { id name code readonly } callIncidents { id name code readonly DepartmentId } callDescriptions { id text } }}"
     }
     return json.encode(query)
 end
@@ -492,6 +511,7 @@ function queries.update_call(props)
         operationName = null,
         variables = {
             id = props.id,
+            DepartmentId = props.DepartmentId,
             callerInfo = props.callerInfo,
             callGrade = props.callGrade,
             callType = props.callType,
@@ -501,7 +521,7 @@ function queries.update_call(props)
             markerX = props.markerX,
             markerY = props.markerY
         },
-        query = "mutation ($id: ID!, $callerInfo: String, $callGrade: CallGradeInput!, $callType: CallTypeInput!, $callIncidents: [IncidentTypeInput]!, $callLocations: [LocationInput!]!, $callDescriptions: [CallDescriptionInput], $markerX: Float, $markerY: Float) { updateCall(id: $id, callerInfo: $callerInfo, callGrade: $callGrade, callType: $callType, callIncidents: $callIncidents, callLocations: $callLocations, callDescriptions: $callDescriptions, markerX: $markerX, markerY: $markerY) { id callerInfo markerX markerY callType { id name code readonly } callGrade { id name code readonly } callLocations { id name code readonly } callIncidents { id name code readonly } callDescriptions { id text } }}"
+        query = "mutation ($id: ID!, $callerInfo: String, $callGrade: CallGradeInput!, $callType: CallTypeInput!, $callIncidents: [IncidentTypeInput]!, $callLocations: [LocationInput!]!, $callDescriptions: [CallDescriptionInput], $markerX: Float, $markerY: Float, $DepartmentId: ID!) { updateCall(id: $id, callerInfo: $callerInfo, callGrade: $callGrade, callType: $callType, callIncidents: $callIncidents, callLocations: $callLocations, callDescriptions: $callDescriptions, markerX: $markerX, markerY: $markerY, DepartmentId: $DepartmentId) { id callerInfo markerX markerY DepartmentId callType { id name code readonly DepartmentId } callGrade { id name code readonly DepartmentId } callLocations { id name code readonly } callIncidents { id name code readonly DepartmentId } callDescriptions { id text } }}"
     }
     return json.encode(query)
 end
@@ -511,10 +531,11 @@ function queries.create_bolo(props)
         operationName = null,
         variables = {
             id = props.id,
+            DepartmentId = props.DepartmentId,
             boloType = props.boloType,
             details = props.details
         },
-        query = "mutation createBolo($boloType: String! $details: BoloDetailsInput!) {createBolo(boloType: $boloType details: $details) {id boloType details { description licencePlate driverDescription occupants lastLocation reason } } }"
+        query = "mutation createBolo($boloType: String! $details: BoloDetailsInput! $DepartmentId: ID!) {createBolo(boloType: $boloType details: $details DepartmentId: $DepartmentId) {id boloType DepartmentId details { description licencePlate driverDescription occupants lastLocation reason } } }"
     }
     return json.encode(query)
 end
@@ -524,10 +545,11 @@ function queries.update_bolo(props)
         operationName = null,
         variables = {
             id = props.id,
+            DepartmentId = props.DepartmentId,
             boloType = props.boloType,
             details = props.details
         },
-        query = "mutation ($id: ID! $boloType: String! $details: BoloDetailsInput!){updateBolo(id: $id boloType: $boloType details: $details){id boloType details{licencePlate driverDescription occupants lastLocation reason}}}"
+        query = "mutation ($id: ID! $boloType: String! $details: BoloDetailsInput! $DepartmentId: ID!){updateBolo(id: $id boloType: $boloType details: $details DepartmentId: $DepartmentId){id boloType DepartmentId details {licencePlate driverDescription occupants lastLocation reason}}}"
     }
     return json.encode(query)
 end
@@ -558,11 +580,12 @@ function queries.create_unit(props)
     local query = {
         operationName = null,
         variables = {
+            DepartmentId = props.DepartmentId,
             callSign = props.callSign,
             unitStateId = props.unitState.id,
             unitTypeId = props.unitType.id
         },
-        query = "mutation ($callSign: String!, $unitTypeId: ID!, $unitStateId: ID!) { createUnit(callSign: $callSign, UnitTypeId: $unitTypeId, UnitStateId: $unitStateId) { id } }"
+        query = "mutation ($callSign: String!, $unitTypeId: ID!, $unitStateId: ID!, $DepartmentId: ID!) { createUnit(callSign: $callSign, UnitTypeId: $unitTypeId, UnitStateId: $unitStateId, DepartmentId: $DepartmentId) { id } }"
     }
     return json.encode(query)
 end
@@ -572,11 +595,12 @@ function queries.update_unit(props)
         operationName = null,
         variables = {
             id = props.id,
+            DepartmentId = props.DepartmentId,
             callSign = props.callSign,
             unitStateId = props.unitState.id,
             unitTypeId = props.unitType.id
         },
-        query = "mutation ($id: ID!, $callSign: String!, $unitTypeId: ID!, $unitStateId: ID!) { updateUnit(id: $id, callSign: $callSign, UnitTypeId: $unitTypeId, UnitStateId: $unitStateId) { id } }"
+        query = "mutation ($id: ID!, $callSign: String!, $unitTypeId: ID!, $unitStateId: ID!, $DepartmentId: ID!) { updateUnit(id: $id, callSign: $callSign, UnitTypeId: $unitTypeId, UnitStateId: $unitStateId, DepartmentId: $DepartmentId) { id } }"
     }
     return json.encode(query)
 end

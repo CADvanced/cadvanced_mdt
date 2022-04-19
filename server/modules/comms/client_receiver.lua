@@ -7,6 +7,7 @@ local vehicles = module("server/modules/vehicles")
 local legal = module("server/modules/legal")
 local calls = module("server/modules/calls")
 local bolos = module("server/modules/bolos")
+local departments = module("server/modules/departments")
 local client_sender = module("server/modules/comms/client_sender")
 
 local client_receiver = {}
@@ -26,6 +27,7 @@ function client_receiver.client_event_handlers()
             -- the side effect of distributing it to all clients, including us
             users.populate_player()
             client_sender.pass_data({
+                cad_url = conf.val("cad_url"),
                 homepage = conf.val("homepage"),
                 sound_volume = conf.val("sound_volume"),
                 debug = conf.val("debug"),
@@ -67,7 +69,8 @@ function client_receiver.client_event_handlers()
             client_sender.pass_data(state_get("call_grades"), "call_grades", source)
             client_sender.pass_data(state_get("call_types"), "call_types", source)
             client_sender.pass_data(state_get("call_incidents"), "call_incidents", source)
-            client_sender.pass_data(state_get("preference_enable_bolo"), "preference_enable_bolo", source)
+            client_sender.pass_data(state_get("departments"), "departments", source)
+            client_sender.pass_data(state_get("department_announcements"), "department_announcements", source)
             client_sender.pass_data(user_helpers.get_steam_id(source), "steam_id", source)
         end
     )
@@ -315,6 +318,16 @@ function client_receiver.client_event_handlers()
         function(data)
             print_debug("RECEIVED REQUEST FROM CLIENT TO DELETE BOLO")
             bolos.delete_bolo(data)
+        end
+    )
+
+    -- Get a department's announcements
+    RegisterNetEvent("get_department_announcements")
+    AddEventHandler(
+        "get_department_announcements",
+        function(data)
+            print_debug("RECEIVED REQUEST FROM CLIENT TO GET DEPARTMENT ANNOUNCEMENTS")
+            departments.get_department_announcements(data)
         end
     )
 
