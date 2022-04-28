@@ -88,6 +88,11 @@ function calls.get_all_call_grades(pass_to_client)
     )
 end
 
+-- Repopulate all call grades
+function calls.repopulate_call_grades()
+    calls.get_all_call_grades(true)
+end
+
 -- Get the table of all call types
 function calls.get_all_call_types(pass_to_client)
     local q_get_all_call_types = queries.get_all_call_types()
@@ -111,6 +116,11 @@ function calls.get_all_call_types(pass_to_client)
     )
 end
 
+-- Repopulate all call types
+function calls.repopulate_call_types()
+    calls.get_all_call_types(true)
+end
+
 -- Get the table of all call incidents
 function calls.get_all_call_incidents(pass_to_client)
     local q_get_all_call_incidents = queries.get_all_call_incidents()
@@ -132,6 +142,11 @@ function calls.get_all_call_incidents(pass_to_client)
             end
         end
     )
+end
+
+-- Repopulate all incident types
+function calls.repopulate_call_incidents()
+    calls.get_all_call_incidents(true)
 end
 
 -- Send a call

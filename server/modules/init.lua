@@ -32,55 +32,55 @@ function init.bootstrapData()
     users.get_whitelisted()
 
     -- Get all calls
-    calls.get_all_calls()
+    calls.get_all_calls(true)
 
     -- Get all BOLOs
-    bolos.get_all_bolos()
+    bolos.get_all_bolos(true)
 
     -- Get all units
-    units.get_all_units()
+    units.get_all_units(true)
 
     -- Get all unit states
-    units.get_all_unit_states()
+    units.get_all_unit_states(true)
 
     -- Get all unit types
-    units.get_all_unit_types()
+    units.get_all_unit_types(true)
 
     -- Get all user / unit assignments
-    units.get_all_user_units()
+    units.get_all_user_units(true)
 
     -- Get all user ranks
-    users.get_all_user_ranks()
+    users.get_all_user_ranks(true)
 
     -- Get all citizen markers
-    citizens.get_all_markers()
+    citizens.get_all_markers(true)
 
     -- Get all vehicle markers
-    vehicles.get_all_markers()
+    vehicles.get_all_markers(true)
 
     -- Get all vehicle models
-    vehicles.get_all_models()
+    vehicles.get_all_models(true)
 
     -- Get all charges
-    legal.get_all_charges()
+    legal.get_all_charges(true)
 
     -- Get all call grades
-    calls.get_all_call_grades()
+    calls.get_all_call_grades(true)
 
     -- Get all call grades
-    calls.get_all_call_types()
+    calls.get_all_call_types(true)
 
     -- Get all call incidents
-    calls.get_all_call_incidents()
+    calls.get_all_call_incidents(true)
 
     -- Get all locations
-    locations.get_all_locations()
+    locations.get_all_locations(true)
 
     -- Get all departments
-    departments.get_all_departments()
+    departments.get_all_departments(true)
 
     -- Get all department announcements
-    departments.get_department_announcements()
+    departments.get_department_announcements(true)
 end
 
 function init.createEventHandlers()

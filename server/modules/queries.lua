@@ -23,6 +23,14 @@ function queries.get_user(steam_id)
     return json.encode(query)
 end
 
+function queries.get_users()
+    local query = {
+        operationName = null,
+        query = "{ allUsers { id userName steamId avatarUrl x y roles { id name code } character { ... on Citizen { id firstName lastName active __typename } ... on Officer { id firstName lastName active department { id colour logo name bolo } __typename } } } }"
+    }
+    return json.encode(query)
+end
+
 function queries.start_panic(steam_id)
     local query = {
         operationName = null,
@@ -105,7 +113,7 @@ function queries.get_unit(unit_id)
     local query = {
         operationname = null,
         query = _doSub(
-            "{ getUnit(id: $x) { id callSign DepartmentId unitType { id name DepartmentId } unitState { id name colour code DepartmentId } UnitTypeId UnitStateId } }",
+            "{ getUnit(id: $x) { id callSign DepartmentId unitType { id name DepartmentId } unitState { id name colour code active DepartmentId } UnitTypeId UnitStateId } }",
             {x = unit_id}
         )
     }
@@ -279,7 +287,7 @@ function queries.set_unit_state(props, unit)
             UnitTypeId = unit.UnitTypeId,
             DepartmentId = unit.DepartmentId
         },
-        query = "mutation ($id: ID!, $callSign: String!, $UnitTypeId: ID!, $UnitStateId: ID!, $DepartmentId: ID!) { updateUnit(id: $id, callSign: $callSign, UnitTypeId: $UnitTypeId, UnitStateId: $UnitStateId, DepartmentId: $DepartmentId) { id callSign unitType { id name DepartmentId } unitState { id name colour code DepartmentId } UnitTypeId UnitStateId DepartmentId } }"
+        query = "mutation ($id: ID!, $callSign: String!, $UnitTypeId: ID!, $UnitStateId: ID!, $DepartmentId: ID!) { updateUnit(id: $id, callSign: $callSign, UnitTypeId: $UnitTypeId, UnitStateId: $UnitStateId, DepartmentId: $DepartmentId) { id callSign unitType { id name DepartmentId } unitState { id name colour code active DepartmentId } UnitTypeId UnitStateId DepartmentId } }"
     }
     return json.encode(query)
 end

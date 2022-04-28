@@ -27,4 +27,8 @@ function locations.get_all_locations(pass_to_client)
     )
 end
 
+function locations.repopulate_locations()
+    locations.get_all_locations(true)
+end
+
 return locations

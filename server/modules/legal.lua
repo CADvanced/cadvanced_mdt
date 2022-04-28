@@ -27,6 +27,10 @@ function legal.get_all_charges(pass_to_client)
     )
 end
 
+function legal.repopulate_charges()
+    legal.get_all_charges(true)
+end
+
 -- Send an offence's metadata
 function legal.send_offence_metadata(data)
     local q_send_offence_metadata

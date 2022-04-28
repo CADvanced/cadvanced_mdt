@@ -4,6 +4,8 @@ local calls = module("server/modules/calls")
 local bolos = module("server/modules/bolos")
 local vehicles = module("server/modules/vehicles")
 local citizens = module("server/modules/citizens")
+local locations = module("server/modules/locations")
+local legal = module("server/modules/legal")
 local departments = module("server/modules/departments")
 local preferences = module("server/modules/preferences")
 local cad_config = module("server/modules/cad_config")
@@ -24,6 +26,9 @@ SetHttpHandler(
                                 -- We will receive the Steam ID of a user we
                                 -- need to update our cache of
                                 users.populate_player(data.payload.steamId)
+                            elseif (data.object == "users") then
+                                -- Update all users
+                                users.populate_all_players()
                             elseif (data.object == "unit") then
                                 -- Update a given unit
                                 units.update_unit(data.payload.unitId)
@@ -42,6 +47,12 @@ SetHttpHandler(
                                 if (key == "enable_bolo") then
                                     preferences.repopulate_preference(data.payload.key)
                                 end
+                            elseif (data.object == "charges") then
+                                -- Repopulate all charges
+                                legal.repopulate_charges()
+                            elseif (data.object == "locations") then
+                                -- Repopulate all locations
+                                locations.repopulate_locations()
                             elseif (data.object == "user_units") then
                                 -- Repopulate all user / unit assignments
                                 units.repopulate_user_units()
@@ -60,6 +71,15 @@ SetHttpHandler(
                             elseif (data.object == "unit_types") then
                                 -- Repopulate all unit types
                                 units.repopulate_unit_types()
+                            elseif (data.object == "call_grades") then
+                                -- Repopulate all call grades
+                                calls.repopulate_call_grades()
+                            elseif (data.object == "call_types") then
+                                -- Repopulate all call types
+                                calls.repopulate_call_types()
+                            elseif (data.object == "call_incidents") then
+                                -- Repopulate all call incidents
+                                calls.repopulate_call_incidents()
                             elseif (data.object == "user_ranks") then
                                 -- Repopulate all user ranks
                                 users.repopulate_user_ranks()

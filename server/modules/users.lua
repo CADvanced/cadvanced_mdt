@@ -136,6 +136,28 @@ function users.display_panic(call_id)
     client_sender.pass_data({ call_id = call_id }, "display_panic")
 end
 
+-- Get all players details and update state
+function users.populate_all_players()
+    print_debug("GETTING ALL USERS")
+    local q_users = queries.get_users()
+    api.request(
+        q_users,
+        function(response)
+            response = json.decode(response)
+            if response.error == nil then
+                local returned_users = response.data.getUsers
+                state_set("users", returned_users)
+                -- Send client the updated user list
+                print_debug("SENDING ALL CLIENTS UPDATED USERS")
+                client_sender.pass_data(usr, "users")
+            else
+                print_debug(response.error)
+            end
+        end
+    )
+
+end
+
 -- Get a players details and update state as appropriate
 function users.populate_player(steamId)
     local is_new = false
