@@ -52,7 +52,8 @@ function client_receiver.client_event_handlers()
                 call_number = conf.val("call_number"),
                 call_ring_filename = conf.val("call_ring_filename"),
                 call_busy_filename = conf.val("call_busy_filename"),
-                self_dispatch = conf.val("self_dispatch")
+                self_dispatch = conf.val("self_dispatch"),
+                disable_busy_tone = conf.val("disable_busy_tone")
             }, "config", source)
             client_sender.pass_data(state_get("calls"), "calls", source)
             client_sender.pass_data(state_get("units"), "units", source)

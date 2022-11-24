@@ -98,6 +98,10 @@ function config.sanity_check()
             print("****** CADVANCED: Missing self_dispatch value in config ******")
             return false
         end
+        if conf.disable_busy_tone == nil then
+            print("****** CADVANCED: Missing disable_busy_tone value in config ******")
+            return false
+        end
         return true
     else
         print(
